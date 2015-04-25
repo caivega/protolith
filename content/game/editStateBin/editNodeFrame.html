@@ -1,0 +1,210 @@
+<html>
+<body id="newnode" bgcolor="#FFFFFF">
+
+<script src="../../libs/jquery-custom/js/jquery-1.8.2.js"></script>
+
+<style>
+ .NodeName{
+    font-family: Century Gothic, sans-serif;
+    font-style:bold;
+    font-size:130%;  
+    padding:6px;  
+    border-bottom:groove #EBEBEB;     
+ }
+
+ .FrameButton{
+    width: 80px;
+    height: 40px;
+    padding: 6px;
+    position: relative;
+    left: 0px;
+    top: 115px;
+ }
+
+ .Special{
+    font-family: Century Gothic, sans-serif; 
+    border: groove #EBEBEB;  
+    top: 5px;
+ }
+</style>
+
+<div id='title' class="NodeName"> New Node </div>
+<!-- <div id='pic1_c' style='height:32px;width:28px;overflow:hidden'>
+    <img id='pic1' src='display/images/Terrain1.png'></img>
+</div> -->
+<input type='checkbox' id='pers' value="unchecked"> Persistant? </input> <br>
+<input size='4' id="xpos" value="0"> xpos </input>
+<input size='4' id="ypos" value="0"> ypos </input> <br>
+<input size='4' id="newx" value="0"> newx </input>
+<input size='4' id="newy" value="0"> newy </input> <br>
+
+<input size='34' id="value1" value="none"> val1 </input>
+<select id="v1sel" style='width:68px'> <option value="none">None</option> </select> <br>
+<input size='34' id="value2" value="none"> val2 </input>
+<select id="v2sel" style='width:68px'> <option value="none">None</option> </select>
+<input size='34' id="value3" value="none"> val3 </input>
+<select id="v3sel" style='width:68px'> <option value="none">None</option> </select>
+<div>
+
+<div id="special" style='float:right;width:190px; height:150px;'>
+<div id="spechead" class="Special"> Special </div>
+</div>
+<select id="next_node"> <option value="none">None</option> </select>
+Next Node
+</div>
+
+<button width="40" id="done_button" class="FrameButton">Done!</button>
+<button width="40" id="cancel_button" class="FrameButton">Cancel!</button>
+
+<script type='text/javascript'>
+    function done(){
+        var pers = $("#pers").prop('checked');
+
+    	var xpos = $("#xpos").val();
+    	var ypos = $("#ypos").val();
+
+    	var newx = $("#newx").val();
+    	var newy = $("#newy").val();
+
+    	var val1 = $("#value1").val();
+    	var val2 = $("#value2").val();
+        var val3 = $("#value3").val();
+
+        var next = $("#next_node").val();
+
+        val1 = val1.replace("#","_");
+        val2 = val2.replace("#","_");
+        val2 = val3.replace("#","_");
+        next = next.replace("#","_");
+
+        var ret = [pers,xpos,ypos,newx,newy,val1,val2,val3,next];
+        parent.NODE_STR = ret.join("#");
+        parent.NODE_NAME = $("#title").html();
+        parent.closeThis( true );
+    }  
+
+    function prep(){
+        $("#pers").prop('checked', false);
+    	$("#xpos").prop('disabled', false);
+    	$("#ypos").prop('disabled', false);
+    	$("#newx").prop('disabled', false);
+    	$("#newy").prop('disabled', false);
+    	$("#value1").prop('disabled', false);
+    	$("#value2").prop('disabled', false);
+        $("#value3").prop('disabled', false);
+    	$("#xpos").val(0);
+    	$("#ypos").val(0);
+    	$("#newx").val(0);
+    	$("#newy").val(0);
+    	$("#value1").val("none");
+    	$("#value2").val("none"); 
+        $("#value3").val("none"); 
+        $("#special1").hide();  
+
+        $("#done_button").unbind("click");
+        $("#cancel_button").unbind("click");
+        $("#done_button").click(done);
+        $("#cancel_button").click(cancel); 	
+    }
+
+    function cancel(){
+    	parent.closeThis( false );
+    }
+
+    function setTitle(title){
+    	$("#title").html(title);
+    }
+
+    function disableElem(id){
+    	$("#"+id).prop('disabled', true);
+    }
+
+    function setValSel(valID, list){
+    	str = "";
+    	for( var i in list ){
+    		str += "<option class='"+valID+"_opt' value='"+list[i]+"'>"+list[i]+"</option>";
+    	}
+
+    	$("#"+valID).html(str);
+    }
+
+    function setOptionHoverEvent(valID, ev){
+        str = "";
+        $("#v1sel").hover(function (e)
+        {
+            var target = $(e.target); 
+            if(target.is('option')){
+                console.log( target.val() );
+            }
+        });
+    }
+
+    function setDefault(id, def){
+    	$("#"+id).val(def);
+    }
+
+    function setProp(id, p, val){
+        $("#"+id).prop(p,val);
+    }
+
+    function setPicSrc(id, src){
+        $("#"+id).attr("src", src);
+    }
+
+    function setPicLoc(id, x, y){
+        $("#"+id).css({marginLeft:(-x)+"px", marginTop:(-y)+"px"});
+    }
+
+    function addTileSelectorBox(sprites, src){
+        $("#special1").show();
+    }
+
+    function setDoneCancel(don, can){
+        $("#done_button").unbind("click");
+        $("#cancel_button").unbind("click");        
+        $("#done_button").click(don);
+        $("#cancel_button").click(can);  
+    }
+
+    function getVal(id){
+        return $("#"+id).val();
+    }
+
+    function getHTML(id){
+        return $("#"+id).html();
+    }
+
+    function getChecked(id){
+        return $("#"+id).prop("checked");
+    }
+
+    //$("#v1sel").hide();
+    var container = "<div id='special1' class='Special' style='width:190px; height:150px; overflow:auto;'></div>";
+    $("#special").append(container);
+
+    $("#special1").append("<img id='tiled' src='../../display/images/Terrain1.png'></img>");
+    $("#tiled").click(function(ev){
+        var x = ev.clientX-268 + $("#special1").scrollLeft();
+        var y = ev.clientY-227 + $("#special1").scrollTop();
+        var tile = Math.floor(x/28)+ Math.floor(y/32)*11;
+        tile = tile+1;
+        $("#v1sel").val("tile_"+tile);
+        $("#value1").val("tile_"+tile);
+    });
+
+    $("#v1sel").change( function(){
+    	$("#value1").val( $(this).val() );
+    });
+
+    $("#v2sel").change( function(){
+    	$("#value2").val( $(this).val() );
+    });  
+
+    $("#v3sel").change( function(){
+        $("#value3").val( $(this).val() );
+    });        
+
+</script>
+
+</body>
+</html>	

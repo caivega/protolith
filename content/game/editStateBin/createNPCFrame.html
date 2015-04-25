@@ -1,0 +1,556 @@
+
+<html>
+<body id="createnpc" bgcolor="#FFFFFF" style="overflow:hidden;">
+
+<script src="../../libs/jquery-custom/js/jquery-1.8.2.js"></script>
+
+<style>
+ .NpcName{
+    font-family: Century Gothic, sans-serif;
+    font-style:bold;
+    font-size:130%;  
+    padding:6px;  
+    border-bottom:groove #EBEBEB;     
+ }
+
+ .InnerHeading{
+    font-family: Century Gothic, sans-serif;
+    font-style:italic;
+    font-size:105%;  
+    padding:6px;  
+    border-bottom:dotted #EBEBEB; 
+ }
+
+ .InnearHeadingTwo{
+    font-family: Century Gothic, sans-serif;
+    font-style:italic;
+    font-size:130%;  
+    padding:6px;  
+    border-bottom:solid #BEBEBE; 
+ }
+
+ .FrameButton{
+    width: 80px;
+    height: 40px;
+    padding: 6px;
+    position: relative;
+    left: 0px;
+    top: 27px;
+    overflow:hidden;
+ }
+
+ .StatModButton{
+    width: 20px;
+    height: 20px;
+ }
+
+ .StatsDiv{
+    position:relative;
+    left:313px;
+    top:-248px;
+    overflow:hidden;
+ }
+
+ .AddDiagElemHead{
+    font-family: Century Gothic, serif;
+    font-style:italic;
+    font-size:105%;  
+    padding:3px;  
+    border-bottom:groove #EBEBEB;   
+ }
+
+ .addDiagElemKey{
+    width: 70px;
+ }
+
+ .addDiagElemVal{
+    width: 230px;
+ } 
+
+ .addDiagElemAct{
+    width: 60px;
+ } 
+
+ .DiagEditDiv{
+    z-index:9;
+    position:absolute;
+    top:-1px;
+    left:20px;
+    width:410px;
+    height:350px;
+    overflow:hidden;
+    overflow-y:auto;
+    padding:6px;  
+    background-color:#EEEEEE;
+ }
+
+  .NpcInfoDiv{
+    z-index:9;
+    position:absolute;
+    top:-1px;
+    left:20px;
+    width:410px;
+    height:350px;
+    overflow:hidden;
+    padding:6px;  
+    display:none;
+    background-color:#EEEEEE;
+ }
+</style>
+
+<div id='SelScreen' style='overflow:hidden;'> 
+    <div id='title' class="NpcName"> Create NPC </div>
+    <div id="choose">    
+        <h3 class="InnerHeading"> Choose from Loaded </h3>
+        <input size='11' id="xpos" value="0"> Xpos </input> 
+        <input size='11' id="ypos" value="0"> Ypos </input> <br>
+        <input size='34' id="value1" value="Mr. Generic" style="display:inline"> NPC Name </input> &nbsp<select id="v1sel" style='width:98px'> </select>  <br>     <br>
+        <button id="getNPCInfo" onclick="show_info_pane()"> Get Info </button>        
+    </div>
+    <div id="make">
+        <h3 class="InnerHeading"> Create a new NPC  </h3>
+        <button id="CreateFromTemplate" style="height:30px; width:80px" onclick="show_make_div()"> Create! </buton>
+    </div>
+</div>
+
+<div id='MakeScreen' style:'display:none;overflow:hidden;'>
+    <div id='title2' class="NpcName"> New NPC </div>   
+    <h3 class="InnerHeading"> NPC Properties </h3>
+    <input size='18' id="name" value="Mr. Generic"> Name </input> <br> 
+    <input size='18' id="sprite" value="none"> Sprite </input> <select id="spritesel" style='width:98px'> </select> <br>
+    <input size='18' id="dialogue" value=""> Dialogue </input> <button id="edit_dialogue" onclick="diag_show()"> Edit </button> <br>
+    <input size='18' id="ai_combat" value="none"> Combat AI </input> <br>
+    <input size='18' id="ai_town" value="none"> Town AI </input> <br>
+    <input size='18' id="inventory" value=""> Inventory </input> <br>
+    <input size='18' id="allegiance" value="enemy" > Allegiance </input>  <select id="allegsel" style='width:58px'>
+        <option value="enemy">enemy</option>
+        <option value="ally">ally</option>
+        </select> <br>
+
+    <div class='StatsDiv'>
+    <h3 class="InnerHeading"> Stat Modifiers </h3>
+    <button class='StatModButton' id="POW-">-</button><input size='2' id="POWinp" value='1' style="display:inline"></input><button class='StatModButton' id="POW+">+</button> POW <br>
+    <button class='StatModButton' id="ACC-">-</button><input size='2' id="ACCinp" value='1' style="display:inline"></input><button class='StatModButton' id="ACC+">+</button> ACC <br>
+    <button class='StatModButton' id="FOR-">-</button><input size='2' id="FORinp" value='1' style="display:inline"></input><button class='StatModButton' id="FOR+">+</button> FOR <br>
+    <button class='StatModButton' id="CON-">-</button><input size='2' id="CONinp" value='1' style="display:inline"></input><button class='StatModButton' id="CON+">+</button> CON <br>
+    <button class='StatModButton' id="RES-">-</button><input size='2' id="RESinp" value='1' style="display:inline"></input><button class='StatModButton' id="RES+">+</button> RES <br>
+    <button class='StatModButton' id="SPD-">-</button><input size='2' id="SPDinp" value='1' style="display:inline"></input><button class='StatModButton' id="SPD+">+</button> SPD <br>
+    <button class='StatModButton' id="EVA-">-</button><input size='2' id="EVAinp" value='1' style="display:inline"></input><button class='StatModButton' id="EVA+">+</button> EVA <br>
+    </div>
+    <div id="CLONE" style="position:absolute;z-index:99;top:310px" ><input type="checkbox" id="clonable" value="Clonable">Clonable?</input></div>
+
+<!--     <button id="done_create" style="height:30px; width:80px" onclick="done_create()"> Done! </buton>
+    <button id="cancel_create" style="height:30px; width:80px" onclick="show_make_div()"> Cancel </buton> -->
+</div>    
+
+<button width="40" id="done_button" class="FrameButton">Done!</button>
+<button width="40" id="cancel_button" class="FrameButton">Cancel!</button>
+
+<div id="DiagEdit" class="DiagEditDiv"> 
+<div class="NpcName"> Dialogue Editor </div>
+<select id="diagsel" style='width:98px'> <!-- <option class='diag_option' value="d0">d0</option> --></select> 
+<button id="addDialogue" style="width:88px" onclick="diag_add()"> Add! </button>
+<button id="remDialogue" style="width:88px" onclick="diag_rem()"> Remove! </button>
+<button id="hideDialogue" style="width:88px;float:right;background-color:#BB7777" onclick="diag_hide()" > Done! </button>
+<div id="DiagParts">
+    Key &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Text &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Action<br>
+    <div id="DiagPartsContainer"></div>
+</div>
+</div>
+
+<div id="info_pane" class="NpcInfoDiv">
+<div class="NpcName"> NPC Info </div>
+    <h3 class="InnerHeading"> NPC Properties </h3>
+    <input disabled="true" size='18' id="iname" value="Mr. Generic"> Name </input> <br> 
+    <input disabled="true" size='18' id="isprite" value="none"> Sprite </input>  <br>
+    <input disabled="true" size='18' id="idialogue" value=""> Dialogue </input> Edit </button> <br>
+    <input disabled="true" size='18' id="iai_combat" value="none"> Combat AI </input> <br>
+    <input disabled="true" size='18' id="iai_town" value="none"> Town AI </input> <br>
+    <input disabled="true" size='18' id="iinventory" value=""> Inventory </input> <br>
+    <input disabled="true" size='18' id="iallegiance" value="enemy" > Allegiance </input> <br>
+
+    <div class='StatsDiv'>
+    <h3 class="InnerHeading"> Stat Modifiers </h3>
+    <input size='2' id="iPOWinp" value='1' style="display:inline" disabled="true"></input> POW <br>
+    <input size='2' id="iACCinp" value='1' style="display:inline" disabled="true"></input> ACC <br>
+    <input size='2' id="iFORinp" value='1' style="display:inline" disabled="true"></input> FOR <br>
+    <input size='2' id="iCONinp" value='1' style="display:inline" disabled="true"></input> CON <br>
+    <input size='2' id="iRESinp" value='1' style="display:inline" disabled="true"></input> RES <br>
+    <input size='2' id="iSPDinp" value='1' style="display:inline" disabled="true"></input> SPD <br>
+    <input size='2' id="iEVAinp" value='1' style="display:inline" disabled="true"></input> EVA <br>
+
+    <br> 
+
+    <button id="hideInfoPane" style="width:88px;float:left;background-color:#BB7777" onclick="hide_info_pane()" > Done! </button>    
+</div>
+
+<script type='text/javascript'>
+	
+	var captain_ref = "";
+
+    var active_diag = 0;
+    var active_npc = "";
+
+    var was_created = false;
+
+    function copyObject(obj) {
+        var newObj = {};
+        for (var key in obj) {
+            //copy all the fields
+            newObj[key] = obj[key];
+        }
+
+        return newObj;
+    }
+
+    function prep(){
+        was_created = false;
+        active_npc = $("#v1sel").val();
+    }
+
+	function done(){
+        if( was_created ){
+            parent.WriteFile_generic(JSON.stringify(captain_ref.game.map_loader.npclist), "Protolith.npc" );
+        }
+
+        //I was accidentally changing the contents of the npclist here, so instead I clone the obj rather than 
+        //get a pointer.
+        var npc_template = captain_ref.game.map_loader.get_npc_by_name(active_npc);
+        var npc = copyObject(npc_template);
+
+        var xpos = $("#xpos").val(); 
+        var ypos = $("#ypos").val();
+
+        for( var i in captain_ref.world.characters ){
+            var act = captain_ref.world.characters[i];
+            if( act.name == npc.name  ){
+                alert("An npc with the name '"+npc.name+"' already exists on this map.\n\n  You can't have clones silly!");
+                return;
+            } 
+
+            if( act.x == xpos && act.y == ypos ){
+                alert("An npc already exists at position ("+xpos+","+ypos+") on this map.\n\n  Crowding causes bad things!");
+                return;
+            }
+        }
+
+        if( npc.clonable ){
+            npc.name = npc.name + "_" + captain_ref.random_id(10);
+        }        
+
+        captain_ref.add_npc(npc, xpos, ypos);
+
+        captain_ref.hide_window("fmNPCCreate");
+	}
+
+    function cancel(){
+    	captain_ref.hide_window("fmNPCCreate");
+    }
+
+    function done_create(){
+        show_sel_div();
+    }
+
+    function setDoneCancel(don, can){
+        $("#done_button").unbind("click");
+        $("#cancel_button").unbind("click");        
+        $("#done_button").click(don);
+        $("#cancel_button").click(can);  
+    }
+
+    function set_captain_ref(x){
+    	captain_ref = x;
+    }
+
+    function set_choose_selector(){
+        var npc = "";
+        var sel_str = "";
+        var tmp;
+        for( var i in captain_ref.game.map_loader.npclist ){
+            npc = captain_ref.game.map_loader.npclist[i];
+            sel_str += "<option value='"+npc.name+"'>"+npc.name+"</option>";    
+        }
+        delete used_names;
+        $("#v1sel").html(sel_str);
+    }
+
+    function show_make_div(){
+        $("#SelScreen").hide();
+        $("#MakeScreen").show();
+
+        $(".FrameButton").css({top:'-209px'});
+
+        make_npc_init();
+
+        setDoneCancel(function(){
+            //populate the selector box.
+            var diag = extract_diag_to_obj();
+            extract_npc_into_ml(diag);
+            show_sel_div();
+        },
+        function(){
+            show_sel_div();
+        });
+    }
+
+    function show_sel_div(){
+        $("#SelScreen").show();
+        $("#MakeScreen").hide();
+
+        $(".FrameButton").css({top:'27px'});
+
+        setDoneCancel(done,cancel);
+    }
+
+    function extract_diag_to_obj(){
+        console.log("Extracting diag ui");
+        var diags = {};
+        $(".addDiagElemKey").each(function(){
+            var dkey = $(this).val();
+
+            var diag_id = $(this).attr('name');
+            var val_id = $(this).attr('id').substring($(this).attr('id').length-1, $(this).attr('id').length) ;
+
+            var dval = $("#c_diags_"+diag_id+"_diagVal"+val_id).val();
+            var dact = $("#c_diags_"+diag_id+"_diagAction"+val_id).val();
+
+            if( val_id == 0 ){
+                diags[diag_id] = [];
+            }
+
+            diags[diag_id].push({"key":dkey, "val":dval, "act":dact})
+        });
+
+        return diags
+    }
+
+    function extract_npc_into_ml(diag){
+        var ret = {
+                ai_combat: $("#ai_combat").val(),
+                ai_town: $("#ai_town").val(),
+                dialogue: diag,
+                inventory: [],
+                name: $("#name").val(),
+                sprite: $("#sprite").val(),
+                dspells: [],
+                lspells: [],
+                allegiance: $("#allegiance").val(),
+                clonable: $("#clonable").is(':checked'),
+                stats:{   
+                    "ACC":$("#ACCinp").val(),
+                    "CON":$("#CONinp").val(),
+                    "EVA":$("#EVAinp").val(),
+                    "FOR":$("#FORinp").val(),
+                    "POW":$("#POWinp").val(),
+                    "RES":$("#RESinp").val(),
+                    "SPD":$("#SPDinp").val()
+                    }
+            }
+
+        console.log("Added npc ", ret);
+        captain_ref.game.map_loader.npclist.push(ret);
+        was_created = true;
+
+        set_choose_selector();   
+        $("#v1sel").val(ret.name);
+        $("#v1sel").trigger("change", ret.name);        
+    }
+
+    function setDefault(id, def){
+        $("#"+id).val(def);
+    }
+
+    function make_npc_init(){
+        $("#name").val("Mr. Generic");
+        $("#sprite").val("none");
+        $("#dialogue").val("");
+        $("#ai_combat").val("none");
+        $("#ai_town").val("none");
+        $("#inventory").val("");
+        $("#allegiance").val("enemy");
+        $("#DiagPartsContainer").html("");
+
+        $("#diagsel").html("");
+
+        $("#POWinp").val("1");
+        $("#ACCinp").val("1");
+        $("#FORinp").val("1");
+        $("#CONinp").val("1");
+        $("#RESinp").val("1");
+        $("#SPDinp").val("1");
+        $("#EVAinp").val("1");
+        $("#clonable").attr('checked', false);
+    } 
+
+    function diag_add(){
+
+        var id = 0;
+        $("#diagsel > option").each(function() {
+            var key = this.value.substring(1, this.value.length);
+            if( parseInt(key) > id ){
+                id = parseInt(key);
+            }
+        });
+
+        id = id+1;
+
+        $("#diagsel").append("<option class='diag_option' value='d"+id+"' id='d"+id+"'>d"+id+"</option>");
+        active_diag = "d"+id;
+
+        $("#d"+id).prop("selected", true);  
+
+        var barebones =     '<div class="c_diags" id="c_'+active_diag+'"><div id="c_diags_'+active_diag+'">' + 
+                    '<div id="diag0"><input name='+active_diag+' class="addDiagElemKey" id="c_diags_'+active_diag+'_diagKey0" value="look" disabled="true"></input> <input class="addDiagElemVal" id="c_diags_'+active_diag+'_diagVal0" value=""></input><input class="addDiagElemAct" id="c_diags_'+active_diag+'_diagAction0" value="none"></input><button class="delbutton" id="del0">X</button></div>'+ 
+                    '<div id="diag1"><input name='+active_diag+' class="addDiagElemKey" id="c_diags_'+active_diag+'_diagKey1" value="name" disabled="true"></input> <input class="addDiagElemVal" id="c_diags_'+active_diag+'_diagVal1" value=""></input><input class="addDiagElemAct" id="c_diags_'+active_diag+'_diagAction1" value="none"></input><button class="delbutton" id="del1">X</button></div>'+
+                    '<div id="diag2"><input name='+active_diag+' class="addDiagElemKey" id="c_diags_'+active_diag+'_diagKey2" value="job"  disabled="true"></input> <input class="addDiagElemVal" id="c_diags_'+active_diag+'_diagVal2" value=""></input><input class="addDiagElemAct" id="c_diags_'+active_diag+'_diagAction2" value="none"></input><button class="delbutton" id="del2">X</button></div>'+
+                    '</div><button id="newDiagElem" style="width:68px" onclick="diag_add_component()"> + Elem </button>'+ 
+                    '<button id="closeDiagEdit" style="width:68px;position:absolute:top:100" onclick="diag_hide()">Done</button>'+
+                    '</div>';  
+
+        $("#DiagPartsContainer").append(barebones);
+        show_diag_part(active_diag);
+    }
+
+    function diag_rem(){
+
+        var key = $("#diagsel").val();
+
+        if( key == undefined ){
+            return;
+        }
+
+        var r = confirm("Are you sure you wish to delete this dialogue?\n\n "+key);
+
+        if( r ){
+            $("#"+key).remove();
+            $('#c_'+active_diag).remove();
+            active_diag = $("#diagsel").val();
+            show_diag_part(active_diag);
+
+        }
+    }
+
+    function show_diag_part(id){
+        $(".c_diags").hide();
+        $("#c_"+id).show();  
+    }   
+
+    function diag_add_component(){
+        var id = $(".addDiagElemKey").length;
+
+        var str =   '<div id="diag'+id+'">' +
+        '<input name="'+active_diag+'" class="addDiagElemKey" id="c_diags_'+active_diag+'_diagKey'+id+'" value="Key" style="width:74px"></input>'+
+                    '<input class="addDiagElemVal" id="c_diags_'+active_diag+'_diagVal'+id+'" value="Some text here."></input>'+
+                    '<input class="addDiagElemAct" id="c_diags_'+active_diag+'_diagAction'+id+'" value="none"></input>'+
+                    '<button class="delbutton" id="del'+id+'">X</button>'+
+                    '</div>';
+        $("#c_diags_"+active_diag).append( str );
+    }
+
+    function diag_show(){
+        $("#DiagEdit").show();
+    }
+    function diag_hide(){
+        $("#DiagEdit").hide();
+    }
+
+    function inArr(x, arr){
+        for( var i in arr ){
+            if( x == arr[i]){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    function show_info_pane(){
+        var npc = "";
+        for( var i in captain_ref.game.map_loader.npclist){
+            var tmp = captain_ref.game.map_loader.npclist[i];
+            if( captain_ref.world.fix_actor_name(tmp.name) == active_npc ){
+                npc = tmp;
+                break;
+            }
+        }
+
+        $("#iname").val( npc.name );
+        $("#isprite").val( npc.sprite );
+        $("#idialogue").val( npc.dialogue );
+        $("#iai_combat").val( npc.ai_combat );
+        $("#iai_town").val( npc.ai_town );
+        $("#iinventory").val( npc.inventory );
+        $("#iallegiance").val( npc.allegiance );
+
+        $("#iPOWinp").val( npc.stats.POW );
+        $("#iACCinp").val( npc.stats.ACC );
+        $("#iFORinp").val( npc.stats.FOR );
+        $("#iCONinp").val( npc.stats.CON );
+        $("#iRESinp").val( npc.stats.RES );
+        $("#iSPDinp").val( npc.stats.SPD );
+        $("#iEVAinp").val( npc.stats.EVA );
+
+        $("#info_pane").show();
+    }
+
+    function hide_info_pane(){
+        $("#info_pane").hide();
+    }
+
+    $(".delbutton").live("click", function(){
+        var id = $(this).attr("id").charAt(3);
+
+        if( parseInt(id) < 3 ){
+            return;
+        }
+
+        var r = confirm("Are you sure you wish to delete this element?\n\n Elem "+id);
+        if( r )
+            $("#diag"+id).remove();      
+    });
+
+    $(".StatModButton").live("click", function(){
+        var stat_name = $(this).attr("id").substring(0,3);
+        var mod_action = $(this).attr("id").charAt(3);
+        var val = parseInt($("#"+stat_name+"inp").val(  ));
+        if( mod_action == "+" ){
+            if( val == 99 ){
+                return;
+            }
+            $("#"+stat_name+"inp").val( val+1 );
+        } else {
+            if( val == 1 ){
+                return;
+            }
+            $("#"+stat_name+"inp").val( val-1 );
+        }
+    });
+
+    $("#allegsel").change( function(){
+        $("#allegiance").val( $(this).val() );
+    });
+
+    $("#spritesel").change( function(){
+        $("#sprite").val( $(this).val() );
+    });
+
+    $("#diagsel").change( function(){
+        active_diag = $(this).val();
+        show_diag_part(active_diag);
+    });
+
+    $("#v1sel").change( function(){
+        $("#value1").val( $("#v1sel").val() );
+        active_npc = $("#v1sel").val();
+    });
+
+    $("#MakeScreen").hide();
+    $("#DiagEdit").hide();
+
+    setDoneCancel(done, cancel); 
+
+</script>
+
+
+</body>
+</html>	

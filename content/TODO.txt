@@ -1,0 +1,112 @@
+==========================================================================================
+Programming Related Bugs/Improvements
+==========================================================================================
+
+Levels 
+	- growth rates based on classes and gender
+	- allow for characters that do not gain levels
+
+Inventory/Spells redesign
+	- Must be easier to touch items on the inventory
+	- Item buttons and equipping must be clearer
+	- Spells can be laid out better
+	- Fix those god awful give buttons
+	
+Implement proper outside mode - current outside mode is incomplete
+
+Finish spells 
+	- some spells are incomplete/disabled
+	- spells can miss (and most do very often)
+Fix status effects
+	- Most apply on every move
+	- Super overpowered, must be able to be resisted
+
+Redo Combat System
+	- Nodes in combat mode should execute for only the person stepping on them
+	- Cast only in combat mode
+	- Multiple spell levels
+	- Ways to learn spells from quest/random node
+	- Show status effect damages correctly instead of stacked one on top of the other
+	- Determine a way to use the SPD stat (double hits perhaps?)
+	- Cause a "pick up" or a "use" action to cost action points
+	- Make classes effect weapon bonuses and armor detriments
+
+Dialogue Redesign
+	- System works, but it needs more clarity on what to do (Spellcheck? WTF?)
+	- Allow SHOPS to be made from the dialogue
+	- Allow state and saves to switch active dialogue for npc characters
+	- Allow nodes to be called from dialogue
+
+Implement Quests - Have a node that modifies quest information (dialogue, rewards?)
+
+--- Dumb Bugs and Inconveniences, Low-ish priority for now
+LocalStorage saving - Saves to localstorage are persistant + download option
+	- Test saves + loads for inconsistancies
+Confirm on Item Remove - When removing an item from inventory, confirm removal
+Weight Properties - Make items have weight properties and calculate carrying capacity
+Allow items to be picked up on mobile - Mobile cannot press 'g' to get items
+Fix Minimap Drawing Speed - its really slow and disabled at the moment
+Audio on Mobile - currently all audio is disabled due to a loading bug
+Variable Game Speed - game runs at 1 speed and might be too fast for players
+Touch Screen Hold To Run - currently now you have to tap the screen to move
+In create screen, highlight which stats are affected by class choice
+Make a 'Back' or 'To Game' button when you're in a menu - People getting confused on
+	how to get back into the game from inverntory/party manager
+Move 'logout' portal somewhere else (Save maybe?) - need space for more stuff
+Make Sprites have discernable colors - If you have 2 female archers, they have the 
+	same sprite.  You must be able to tell them apart for clarity.
+In the create screen, hide buttons at the top when not in the main screen - might
+	hit "Done" thinking it will take you back to the main screen
+Make towns actually angry at you for attacking allied characters.
+Fix status effects in town mode - They apply multiple times per move
+Make a more clear indicator that a party member has low health/died - hard to tell
+
+==========================================================================================
+Content-related Improvements
+==========================================================================================
+
+Animated Menu Screen - Currently completely static
+Draw more ambient art for indoors - running out of a variety of things to put inside
+Draw more NPC sprites - Only have dusk brigade ones
+Write Dialog for Carrion Valley 
+	- Tower Rock
+		* John The Inkeeper
+		* Carlinya the Medic
+		* Ela the Mother
+		* Ada Eldridge
+		* Jarl the Idiot
+	- (Southern Town)
+		* Wesley the Mayor
+		* Carlton the Ring-Loser
+		* Annie the Fiance
+	- (Eastern Town) 
+		* Meinsan the Blacksmith
+	- (Northern Town)
+		* Edwinna the Accomplice of Ada
+		* Dock Worker
+		* Boat Seller
+	- (Quarantine Camp)
+		* Exposition Guy 1
+		* Exposition Guy 2
+		* Gordon the Accomplice of Eldrid
+		* Jaxum The Angry Guard
+		* Abelone the Stressed Population Manager
+	- (Tower Dungeon)
+		* Poor Unfortunate Soul
+		* Ada
+		* Eldrid
+Build Towns
+	- Tower Rock
+	- (Southern Town)
+	- (Eastern Town)
+	- (Northern Town)
+	- (Quarantine Camp)
+	- (Tower Dungeon Lvl 1-3)
+	- (Side cave 1)
+	- (Side cave 2)
+Add Nodes from Outside To Town and Vice Versa
+Draw Better portraits (some current ones are not very good)
+
+
+
+

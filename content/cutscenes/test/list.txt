@@ -1,0 +1,14 @@
+-- PSD file: test.psd
+assetlist = {
+	"layer1" = { pos={   0,   0}, size={ 472, 288} }, -- Background
+	"layer2" = { pos={  57,  21}, size={ 335, 168} }, -- Layer 2
+	"layer3" = { pos={ 129,  28}, size={ 176, 166} }, -- Layer 3
+	"layer4" = { pos={ 126,  27}, size={ 175, 168} }, -- Layer 4
+	"layer5" = { pos={ 129,  26}, size={ 188, 169} }, -- Layer 5
+	"layer6" = { pos={ 126,  25}, size={ 190, 171} }, -- Layer 6
+	"layer7" = { pos={ 116,  25}, size={ 200, 171} }, -- Layer 7
+	"layer8" = { pos={  61,  25}, size={ 255, 171} }, -- Layer 8
+	"layer9" = { pos={  17,  25}, size={ 299, 171} }, -- Layer 9
+	"layer10" = { pos={  12,  27}, size={ 285, 169} }, -- Layer 10
+	"layer11" = { pos={  91,   7}, size={ 242, 281} }, -- Layer 11
+}

@@ -1,0 +1,64 @@
+{
+	"nodes":[
+		{
+			"type":"SingleNotification",
+			"name":"Notification1",
+			"xpos":5,
+			"ypos":2,
+			"pers":false,
+			"next":"none",
+			"text":"This is a tesssssst",
+			"portrait":"port_exclaim"
+		},
+		{
+			"type":"SingleNotification",
+			"name":"Notification2",
+			"xpos":12,
+			"ypos":28,
+			"pers":false,
+			"next":"Scene1",
+			"text":"You come upon the wall to this room and see that there is a small monitor here, you take a look at what it is showing...",
+			"portrait":"port_exclaim"
+		},
+		{
+			"type":"Cutscene",
+			"name":"Scene1",
+			"xpos":1,
+			"ypos":1,
+			"pers":false,
+			"next":"none",
+			"cutscenename":"test",
+			"nextmap":"combat",
+			"newx":10,
+			"newy":28
+		}
+	],
+	"npcs2":[
+
+	],
+	"npcs":[
+		{
+			"name":"Dusk Medic_O",
+			"x":11,
+			"y":23
+		},
+		{
+			"name":"Dusk Medic_1",
+			"x":9,
+			"y":23
+		},
+		{
+			"name":"Tzit Mage_0",
+			"x":10,
+			"y":23
+		},
+		{
+			"name":"Tzit Mage_1",
+			"x":12,
+			"y":23
+		}
+	],
+	"items":[
+
+	]
+}

@@ -1,0 +1,932 @@
+[
+  {
+    "name": "Mr. Generic",
+    "sprite": "none",
+    "dialogue": {},
+    "allegiance": "ally",
+    "ai_combat": "none",
+    "ai_town": "rand",
+    "inventory": [],
+    "stats": {
+      "dspells": [],
+      "lspells": [],
+      "POW": 1,
+      "ACC": 1,
+      "FOR": 1,
+      "CON": 1,
+      "RES": 1,
+      "SPD": 1,
+      "EVA": 1
+    }
+  },
+  {
+    "name": "Mr. Generic2",
+    "sprite": "none",
+    "dialogue": {},
+    "allegiance": "ally",
+    "ai_combat": "none",
+    "ai_town": "none",
+    "inventory": [],
+    "stats": {
+      "dspells": [],
+      "lspells": [],
+      "POW": 1,
+      "ACC": 1,
+      "FOR": 1,
+      "CON": 1,
+      "RES": 1,
+      "SPD": 1,
+      "EVA": 1
+    }
+  },
+  {
+    "ai_combat": "attack_nearest",
+    "ai_town": "none",
+    "dialogue": {
+      "d1": [
+        {
+          "key": "look",
+          "val": "Here stands Aldous Fischer, a lonely man with a lonely demeanor.  He gives you a somber look as you approach. Job...",
+          "act": "none"
+        },
+        {
+          "key": "name",
+          "val": "\"My name's Aldous Fischer...\" He looks at his feet.",
+          "act": "none"
+        },
+        {
+          "key": "job",
+          "val": "\"I don't really have a job.\"",
+          "act": "none"
+        }
+      ]
+    },
+    "inventory": [],
+    "name": "Aldous Fischer",
+    "sprite": "small_farmer",
+    "dspells": [],
+    "lspells": [],
+    "allegiance": "ally",
+    "stats": {
+      "ACC": "1",
+      "CON": "99",
+      "EVA": "1",
+      "FOR": "1",
+      "POW": "1",
+      "RES": "1",
+      "SPD": "1"
+    }
+  },
+  {
+    "ai_combat": "attack_nearest",
+    "ai_town": "none",
+    "dialogue": {
+      "d1": [
+        {
+          "key": "look",
+          "val": "This man looks similar to an ape.  He scratches his head as you approach.  \"And who might you be, strange travelers?\" ",
+          "act": "none"
+        },
+        {
+          "key": "name",
+          "val": "\"Uhhh...\"  It appears he is just about as smart as an ape as well.",
+          "act": "none"
+        },
+        {
+          "key": "job",
+          "val": "He beats the ground with his fists.",
+          "act": "none"
+        }
+      ]
+    },
+    "inventory": [],
+    "name": "Tumbla Jain",
+    "sprite": "small_farmer",
+    "dspells": [],
+    "lspells": [],
+    "allegiance": "ally",
+    "stats": {
+      "ACC": "1",
+      "CON": "1",
+      "EVA": "1",
+      "FOR": "1",
+      "POW": "99",
+      "RES": "1",
+      "SPD": "1"
+    }
+  },
+  {
+    "ai_combat": "attack_nearest",
+    "ai_town": "none",
+    "dialogue": {},
+    "inventory": [],
+    "name": "Masker",
+    "sprite": "db_doctor",
+    "dspells": [],
+    "lspells": [],
+    "allegiance": "ally",
+    "stats": {
+      "ACC": "1",
+      "CON": "1",
+      "EVA": "1",
+      "FOR": "1",
+      "POW": "1",
+      "RES": "1",
+      "SPD": "1"
+    }
+  },
+  {
+    "ai_combat": "attack_nearest",
+    "ai_town": "none",
+    "dialogue": {},
+    "inventory": [],
+    "name": "Muncher",
+    "sprite": "rock_monster",
+    "dspells": [],
+    "lspells": [],
+    "allegiance": "enemy",
+    "clonable": true,
+    "stats": {
+      "ACC": "5",
+      "CON": "5",
+      "EVA": "5",
+      "FOR": "5",
+      "POW": "10",
+      "RES": "5",
+      "SPD": "5"
+    }
+  },
+  {
+    "ai_combat": "none",
+    "ai_town": "none",
+    "dialogue": {},
+    "inventory": [],
+    "name": "DummyWeak",
+    "sprite": "rock_monster",
+    "dspells": [],
+    "lspells": [],
+    "allegiance": "enemy",
+    "clonable": true,
+    "stats": {
+      "ACC": "5",
+      "CON": "5",
+      "EVA": "5",
+      "FOR": "5",
+      "POW": "10",
+      "RES": "5",
+      "SPD": "5"
+    }
+  },
+  {
+    "ai_combat": "none",
+    "ai_town": "none",
+    "dialogue": {},
+    "inventory": [],
+    "name": "DummyNormal",
+    "sprite": "rock_monster",
+    "dspells": [],
+    "lspells": [],
+    "allegiance": "enemy",
+    "clonable": true,
+    "stats": {
+      "ACC": "5",
+      "CON": "30",
+      "EVA": "30",
+      "FOR": "30",
+      "POW": "10",
+      "RES": "30",
+      "SPD": "5"
+    }
+  },
+  {
+    "ai_combat": "none",
+    "ai_town": "none",
+    "dialogue": {},
+    "inventory": [],
+    "name": "DummyStrong",
+    "sprite": "rock_monster",
+    "dspells": [],
+    "lspells": [],
+    "allegiance": "enemy",
+    "clonable": true,
+    "stats": {
+      "ACC": "5",
+      "CON": "75",
+      "EVA": "75",
+      "FOR": "75",
+      "POW": "10",
+      "RES": "75",
+      "SPD": "5"
+    }
+  },
+  {
+    "ai_combat": "attack_nearest",
+    "ai_town": "none",
+    "dialogue": {},
+    "inventory": [],
+    "name": "DuskScout",
+    "sprite": "db_scout",
+    "dspells": [],
+    "lspells": [],
+    "allegiance": "enemy",
+    "clonable": true,
+    "stats": {
+      "ACC": "3",
+      "CON": "5",
+      "EVA": "3",
+      "FOR": "2",
+      "POW": "10",
+      "RES": "1",
+      "SPD": "5"
+    }
+  },
+  {
+    "ai_combat": "attack_nearest",
+    "ai_town": "none",
+    "dialogue": {},
+    "inventory": [],
+    "name": "Dusk Fighter",
+    "sprite": "db_hammer",
+    "dspells": [],
+    "lspells": [],
+    "allegiance": "enemy",
+    "clonable": true,
+    "stats": {
+      "ACC": "2",
+      "CON": "5",
+      "EVA": "1",
+      "FOR": "7",
+      "POW": "5",
+      "RES": "4",
+      "SPD": "1"
+    }
+  },
+  {
+    "ai_combat": "attack_nearest",
+    "ai_town": "none",
+    "dialogue": {},
+    "inventory": [],
+    "name": "Dusk Commander",
+    "sprite": "db_commander",
+    "dspells": [],
+    "lspells": [],
+    "allegiance": "enemy",
+    "clonable": true,
+    "stats": {
+      "ACC": "10",
+      "CON": "10",
+      "EVA": "5",
+      "FOR": "10",
+      "POW": "20",
+      "RES": "5",
+      "SPD": "5"
+    }
+  },
+  {
+    "ai_combat": "attack_archer",
+    "ai_town": "none",
+    "dialogue": {},
+    "inventory": [],
+    "name": "Dusk Archer",
+    "sprite": "db_bow",
+    "dspells": [],
+    "lspells": [],
+    "allegiance": "enemy",
+    "clonable": true,
+    "stats": {
+      "ACC": "10",
+      "CON": "3",
+      "EVA": "1",
+      "FOR": "3",
+      "POW": "10",
+      "RES": "1",
+      "SPD": "1"
+    }
+  },
+  {
+    "ai_combat": "attack_nearest",
+    "ai_town": "none",
+    "dialogue": {},
+    "inventory": [],
+    "name": "Dusk Rogue",
+    "sprite": "db_dagger",
+    "dspells": [],
+    "lspells": [],
+    "allegiance": "enemy",
+    "clonable": true,
+    "stats": {
+      "ACC": "10",
+      "CON": "4",
+      "EVA": "5",
+      "FOR": "7",
+      "POW": "3",
+      "RES": "3",
+      "SPD": "10"
+    }
+  },
+  {
+    "ai_combat": "attack_lightmagic_simple",
+    "ai_town": "none",
+    "dialogue": {},
+    "inventory": [],
+    "name": "Dusk Medic",
+    "sprite": "db_doctor",
+    "dspells": [],
+    "lspells": [],
+    "allegiance": "enemy",
+    "clonable": true,
+    "stats": {
+      "ACC": "1",
+      "CON": "2",
+      "EVA": "1",
+      "FOR": "2",
+      "POW": "10",
+      "RES": "10",
+      "SPD": "1"
+    }
+  },
+  {
+    "ai_combat": "attack_nearest",
+    "ai_town": "none",
+    "dialogue": {},
+    "inventory": [],
+    "name": "Tzit Fighter",
+    "sprite": "tzit_fighter",
+    "dspells": [],
+    "lspells": [],
+    "allegiance": "enemy",
+    "clonable": true,
+    "stats": {
+      "ACC": "5",
+      "CON": "5",
+      "EVA": "1",
+      "FOR": "15",
+      "POW": "20",
+      "RES": "99",
+      "SPD": "5"
+    }
+  },
+  {
+    "ai_combat": "attack_darkmagic_simple",
+    "ai_town": "none",
+    "dialogue": {},
+    "inventory": [],
+    "name": "Tzit Mage",
+    "sprite": "tzit_mage",
+    "dspells": [],
+    "lspells": [],
+    "allegiance": "enemy",
+    "clonable": true,
+    "stats": {
+      "ACC": "1",
+      "CON": "5",
+      "EVA": "1",
+      "FOR": "5",
+      "POW": "30",
+      "RES": "5",
+      "SPD": "5"
+    }
+  },
+  {
+    "ai_combat": "none",
+    "ai_town": "none",
+    "dialogue": {
+      "d1": [
+        {
+          "key": "look",
+          "val": "In this library you meet the keeper of the books.  She is an elderly woman with sharp eyes and a vexed look on her face as she glares at you.",
+          "act": "none"
+        },
+        {
+          "key": "name",
+          "val": "\"Ms Elsa,\" she says shortly.  \"And don't think about stealing any of my books.\"",
+          "act": "none"
+        },
+        {
+          "key": "job",
+          "val": "\"I am the librarian.\"  You hear a faint note of pride in her voice even over her short tone.",
+          "act": "none"
+        },
+        {
+          "key": "books",
+          "val": "\"These books are the property of the Library of Tower Rock.  If you so much as think of stealing them I will make you regret it.\"  You have a hard time imagining what this frail woman could possibly do to you.",
+          "act": "none"
+        },
+        {
+          "key": "stealing",
+          "val": "\"Some children have thought it amusing to steal my books.\"  She frowns in disgust. \"I'll show them one day.  They'll wish they were never born!\"",
+          "act": "none"
+        }
+      ]
+    },
+    "inventory": [],
+    "name": "Natty Elsa",
+    "sprite": "old_woman",
+    "dspells": [],
+    "lspells": [],
+    "allegiance": "ally",
+    "clonable": false,
+    "portrait":"port_sil",
+    "stats": {
+      "ACC": "1",
+      "CON": "1",
+      "EVA": "1",
+      "FOR": "1",
+      "POW": "1",
+      "RES": "1",
+      "SPD": "1"
+    }
+  },
+  {
+    "ai_combat": "none",
+    "ai_town": "none",
+    "dialogue": {},
+    "inventory": [],
+    "name": "Farmer Guard",
+    "sprite": "small_farmer",
+    "dspells": [],
+    "lspells": [],
+    "allegiance": "ally",
+    "clonable": true,
+    "stats": {
+      "ACC": "1",
+      "CON": "15",
+      "EVA": "1",
+      "FOR": "5",
+      "POW": "10",
+      "RES": "1",
+      "SPD": "1"
+    }
+  },
+  {
+    "ai_combat": "none",
+    "ai_town": "none",
+    "dialogue": {
+      "d1": [
+        {
+          "key": "look",
+          "val": "This appears to be the leader of the farmer guards.  He is an older man in his forties, but he holds his pitch fork at your throats with a very firm grip.",
+          "act": "none"
+        },
+        {
+          "key": "name",
+          "val": "\"Giles,\" he says, grimacing.  \"Who are you?  Are you here to cause trouble?\"",
+          "act": "none"
+        },
+        {
+          "key": "job",
+          "val": "\"You let me ask the questions.  Are you here to make trouble?\"",
+          "act": "none"
+        },
+        {
+          "key": "trouble",
+          "val": "\"Yes, trouble. This town's had a lot of it recently and we're not excited to have any more.\" He gives you an otherwise suspicious look, but lowers his pitchfork.  \"Why are you here?\"",
+          "act": "none"
+        },
+        {
+          "key": "here",
+          "val": "You tell him that you are refugees from the civil war to the east.  He grimaces, \"I had heard about that.  My sympathies are with you.\"  He looks to the other guards who both nod back at him.  \"I suppose I can allow you passage if you like, but you should be careful.\"",
+          "act": "none"
+        },
+        {
+          "key": "harassing",
+          "val": "\"They've invaded our town several times, taken supplies that they've wanted, insisted we succomb to their whims. They were looking for somebody and when they found out we couldn't tell them where he was, they weren't pleased.\"",
+          "act": "none"
+        },
+        {
+          "key": "careful",
+          "val": "\"There are some dangerous men about.  A group calling themselves the 'Dusk Brigade'.  I don't know who they are, or what they want, but they've been harassing our town for a while now.  We would fight them off, but they are very disciplined soldiers.  We wouldn't stand a chance.\"",
+          "act": "none"
+        },
+        {
+          "key": "somebody",
+          "val": "\"Some old man.  They described him as being very dangerous.  We don't know who he is but he isn't here.\"",
+          "act": "none"
+        },
+        {
+          "key": "passage",
+          "val": "He steps aside to let you through. \"If you need any help,\" he says, tilting his hat a bit, \"you being refugees and all... talk to Master Eldridge. He's a bit like the mayor around here, and he'll make sure to take care of you.\"",
+          "act": "TeleportNPC#18"
+        }
+      ]
+    },
+    "inventory": [],
+    "name": "Giles the Farmer",
+    "sprite": "large_farmer",
+    "dspells": [],
+    "lspells": [],
+    "allegiance": "ally",
+    "clonable": false,
+    "portrait":"port_farmer",
+    "stats": {
+      "ACC": "15",
+      "CON": "15",
+      "EVA": "15",
+      "FOR": "15",
+      "POW": "15",
+      "RES": "15",
+      "SPD": "15"
+    }
+  },
+  {
+    "ai_combat": "none",
+    "ai_town": "none",
+    "dialogue": {
+      "d1": [
+        {
+          "key": "look",
+          "val": "In this small shop a woman bustles about behind the counter doing various shop-related things.  She hardly glances at you as you walk in.",
+          "act": "none"
+        },
+        {
+          "key": "name",
+          "val": "\"Corinna,\" she says briskly.  \"I'm very busy so please be succinct.\"  You notice that she speaks with a very artiulate tone as if she had studdied literature at some point in her life.",
+          "act": "none"
+        },
+        {
+          "key": "job",
+          "val": "\"I am the owner of this quaint, little shop.\"",
+          "act": "none"
+        },
+        {
+          "key": "busy",
+          "val": "\"It takes quite a lot of effort to run an item shop nowadays.\"  She runs a sharp eye over you.  \"What with strangers coming and going so often.\"",
+          "act": "none"
+        },
+        {
+          "key": "strangers",
+          "val": "She raises an eyebrow at you. \"Let me guess, refugees?\" You nod, and with a sigh she continues, \"You aren't the first people I've never seen before come into my shop. Most just want to look around, but only a few days ago I had one of those Dusk Brigade scoundrels come in here asking about a missing person.\"",
+          "act": "none"
+        },
+        {
+          "key": "person",
+          "val": "\"He was described as an elderly man with a gleam in his eye.  I could hardly recognize anybody with a description as vague as that!\"",
+          "act": "none"
+        },
+        {
+          "key": "shop",
+          "val": "\"Yes, I sell various items here, mostly trinkets from the villagers here who sell me odds and ends they wish to get rid of.  Would you like to buy something?\"",
+          "act": "none"
+        },
+        {
+          "key": "noble",
+          "val": "\"Is it a crime for a woman to be educated?\" she says irritably.",
+          "act": "none"
+        }, 
+        {
+          "key": "educated",
+          "val": "\"Perhaps I was noble at one point, but you should know better than to go poking into others' affairs!\"",
+          "act": "none"
+        },                
+        {
+          "key": "buy",
+          "val": "Some text here.",
+          "act": "shop1"
+        },
+        {
+          "key": "briar",
+          "val": "She looks suspiciously at you. \"What about Briar?  Did he do something stupid again?\"",
+          "act": "none"
+        },
+        {
+          "key": "stupid",
+          "val": "You tell her about Briar's dilemma. As you speak her eybrows become more and more narrow until she has a furious look on face. \"That idiot!\" she shouts. \"Why doesn't he tell me anything!\" She bursts out of the door in a rage leaving you standing in her shop alone.",
+          "act": "none"
+        }        
+      ]
+    },
+    "inventory": [],
+    "name": "Corinna",
+    "sprite": "lcyan_chick",
+    "dspells": [],
+    "lspells": [],
+    "allegiance": "ally",
+    "clonable": false,
+    "portrait":"port_girl",
+    "stats": {
+      "ACC": "4",
+      "CON": "2",
+      "EVA": "3",
+      "FOR": "3",
+      "POW": "5",
+      "RES": "4",
+      "SPD": "2"
+    }
+  },
+  {
+    "ai_combat": "none",
+    "ai_town": "none",
+    "dialogue": {
+      "d1": [   
+        {
+          "key": "look",
+          "val": "This man is clearly the master of this manor. Wearing golden-cuffed sleeves and trimmed trousers, he holds his head high with a haughty stare at you as he waits for you to speak to him.",
+          "act": "none"
+        },
+        {
+          "key": "name",
+          "val": "\"Those in this town call me Master Eldridge.\"  He looks at you as if you should have already known that.",
+          "act": "none"
+        },
+        {
+          "key": "job",
+          "val": "\"I am merely the benefactor for this little town here.\"  His lip curls into a smile. \"And I also greet strangers.\"  ",
+          "act": "none"
+        },
+        {
+          "key": "benefactor",
+          "val": "\"Some people find it difficult to live without a little... leadership.\" He leaves it at that, but his smile hints at much more.",
+          "act": "none"
+        }, 
+        {
+          "key": "leadership",
+          "val": "\"Perhaps you should ask others about me if you really wish to know what I do for this town.\"",
+          "act": "none"
+        },                   
+        {
+          "key": "strangers",
+          "val": "\"You are strangers to Tower Rock are you not? I have become very interested in strangers in lieu of recent events.\"",
+          "act": "none"
+        },
+        {
+          "key": "events",
+          "val": "\"Recently we have been harassed by a group of... bandits\", he forces the word from his mouth as if he is almost too disgusted to say it. \"I want them nullified.\"",
+          "act": "none"
+        }, 
+        {
+          "key": "traipse",
+          "val": "\"They demand supplies, trample crops. Specifically they are looking for a certain man who they describe as an older fellow with a dangerous presence.  I've not seen anyone like that around here.\" He gives a little smile, \"But that does not imply the man isn't about.\"",
+          "act": "none"
+        },          
+        {
+          "key": "bandits",
+          "val": "\"They call themselves the 'Dusk Brigade'\" He frowns in disgust. \"Filthy name... They traipse about like they they own this town.  I'd get rid of them myself but there are trained soldiers among them...\"  He leans foreword and says quietly, \"And a wizard.\"",
+          "act": "none"
+        }, 
+        {
+          "key": "wizard",
+          "val": "\"Yes. I have seen him masquerading about with them as they cause trouble. He keeps himself hidden and away from the rest of them, but it is clear that his intentions comply with the bandits' intentions.\""  ,
+          "act": "none"
+        }, 
+        {
+          "key": "nullified",
+          "val": "\"I am willing to pay a considerable sum for somebody to aid me in getting rid of these intruders. If you want to participate, please say so.",
+          "act": "none"
+        },
+        {
+          "key": "participate",
+          "val": "\"Very good,\" he says, satisfied. \"There is a man named Gordon who owns a tavern at the north end of Tower Rock.  Approach him and ask him about 'participation'. He will ask for this,\" he hands you a letter sealed with a stamp of wax. \"Give that to him and we will be on our way to a beneficial relationship\" He flashes a smile at you.",
+          "act": "Quest:Master Eldridge"
+        }                             
+      ]
+    },
+    "inventory": [],
+    "name": "Master Eldridge",
+    "sprite": "mayor",
+    "dspells": [],
+    "lspells": [],
+    "allegiance": "ally",
+    "clonable": false,
+    "portrait":"port_sil",
+    "stats": {
+      "ACC": "50",
+      "CON": "50",
+      "EVA": "50",
+      "FOR": "50",
+      "POW": "50",
+      "RES": "50",
+      "SPD": "50"
+    }
+  },
+  {
+    "ai_combat": "none",
+    "ai_town": "rand",
+    "dialogue": {},
+    "inventory": [],
+    "name": "Farmer",
+    "sprite": "small_farmer",
+    "dspells": [],
+    "lspells": [],
+    "allegiance": "ally",
+    "clonable": true,
+    "stats": {
+      "ACC": "5",
+      "CON": "5",
+      "EVA": "5",
+      "FOR": "5",
+      "POW": "5",
+      "RES": "5",
+      "SPD": "5"
+    }
+  },
+  {
+    "ai_combat": "none",
+    "ai_town": "none",
+    "dialogue": {
+      "d1": [
+        {
+          "key": "look",
+          "val": "This man appears to be thinking very hard about something. His head is in his hands as he sits on a log and he mutters continiously to himself. You have to stand right next to him to get his attention.",
+          "act": "none"
+        },
+        {
+          "key": "name",
+          "val": "\"Briar,\" he says distractedly.",
+          "act": "none"
+        },
+        {
+          "key": "job",
+          "val": "His pensive demeanor erupts in a frenzy of panic. \"Everything is locked!\", he says. \"Somebody has gone and locked all the sheds around here because they are afraid of the Dusk Brigade! But I need access to those sheds. They have... valuable things... in them.",
+          "act": "none"
+        },
+        {
+          "key": "things",
+          "val": "\"Mind your own business!\" he says sharply. \"Unless, of course, you'd be willing to help me.",
+          "act": "none"
+        },
+        {
+          "key": "help",
+          "val": "\"Here's my problem,\" he says. \"I'm proposing to Corinna today, but it's a little... complicated. Her father does not want her to marry me, so I've had to be very quiet about it.  I've had to go and hide the engagement ring.  It's in one of those sheds!",
+          "act": "Quest:Shed Key"
+        },
+        {
+          "key": "ring",
+          "val": "He grins nerviously. \"It's very valuable to me. It's a family heirloom. I need access to those sheds. If you could go find who has the key to the sheds, I could get my ring back quietly, and nobody need know about our engagement!\" He looks a little relieved that he has a way out now.",
+          "act": "none"
+        }        
+      ]
+    },
+    "inventory": [],
+    "name": "Callous Briar",
+    "sprite": "old_woman",
+    "dspells": [],
+    "lspells": [],
+    "allegiance": "ally",
+    "clonable": false,
+    "portrait":"port_sil",
+    "stats": {
+      "ACC": "1",
+      "CON": "1",
+      "EVA": "1",
+      "FOR": "1",
+      "POW": "1",
+      "RES": "1",
+      "SPD": "1"
+    }
+  },
+  {
+    "ai_combat": "none",
+    "ai_town": "none",
+    "dialogue": {
+      "d1": [
+        {
+          "key": "look",
+          "val": "This man stares at you calmly, waiting for you to speak.",
+          "act": "none"
+        },
+        {
+          "key": "name",
+          "val": "\"I am the Item Provider,\" he says in a flat, almost emotionless voice.",
+          "act": "none"
+        },
+        {
+          "key": "job",
+          "val": "\"My job is to provide a variety of items to you as you require them. In this room,\" he gestures to the shed that he stands by, \"you will find several different items. Please feel free to take whatever you need.",
+          "act": "none"
+        },
+        {
+          "key": "variety",
+          "val": "\"I have acquired bows, axes, swords, spears, sheilds, chain mail, splint mail, greaves, and a pizza.\"",
+          "act": "none"
+        } ,
+        {
+          "key": "pizza",
+          "val": "\"It is important during combat to remain nourished and satisfied, lest you get distracted by pains in the stomach.\"",
+          "act": "none"
+        }              
+      ]
+    },
+    "inventory": [],
+    "name": "Item Provider",
+    "sprite": "green_shirt",
+    "dspells": [],
+    "lspells": [],
+    "allegiance": "ally",
+    "clonable": false,
+    "portrait":"port_sil",
+    "stats": {
+      "ACC": "99",
+      "CON": "99",
+      "EVA": "99",
+      "FOR": "99",
+      "POW": "99",
+      "RES": "99",
+      "SPD": "99"
+    }
+  },
+  {
+    "ai_combat": "none",
+    "ai_town": "none",
+    "dialogue": {
+      "d1": [
+        {
+          "key": "look",
+          "val": "This woman stares at you calmly, waiting for you to speak.",
+          "act": "none"
+        },
+        {
+          "key": "name",
+          "val": "\"I am the Magic Provider,\" she says in a flat, almost emotionless voice.",
+          "act": "none"
+        },
+        {
+          "key": "job",
+          "val": "\"My job is to provide magical knowledge to those who require it. I can teach you how to cast spells of either category.\" ",
+          "act": "none"
+        },
+        {
+          "key": "category",
+          "val": "\"In this world you can cast either Dark Spells or Light Spells. Dark Spells always hurt or hinder an enemy.  Light spells always aid or heal an ally. To cast a spell, click on the spell icon, select the spell and then select your target.\"",
+          "act": "none"
+        },
+        {
+          "key": "pizza",
+          "val": "\"The power you gain from knowledge is nothing compared to the power of gained from eating a pizza.\"",
+          "act": "none"
+        }                                 
+      ]
+    },
+    "inventory": [],
+    "name": "Magic Provider",
+    "sprite": "purple_chick",
+    "dspells": [],
+    "lspells": [],
+    "allegiance": "ally",
+    "clonable": false,
+    "portrait":"port_sil",
+    "stats": {
+      "ACC": "99",
+      "CON": "99",
+      "EVA": "99",
+      "FOR": "99",
+      "POW": "99",
+      "RES": "99",
+      "SPD": "99"
+    }
+  },
+  {
+    "ai_combat": "none",
+    "ai_town": "none",
+    "dialogue": {
+      "d1": [
+        {
+          "key": "look",
+          "val": "\"Hello,\" this man says, \"welcome to the combat demonstration. Feel free to ask me any questions about this place.",
+          "act": "none"
+        },
+        {
+          "key": "name",
+          "val": "\"I am the Greeter,\" he says calmly.",
+          "act": "none"
+        },
+        {
+          "key": "job",
+          "val": "\"When new recruits first arrive they are often confused and do not know where to go.  But I am here to alleviate that until the demonstration begins.\"",
+          "act": "none"
+        },
+        {
+          "key": "demonstration",
+          "val": "\"Up ahead to the north you will find three paths. The leftmost path will take you to an easy zone, the middle path will take you to a standard zone, and the rightmost path will take you to a difficult zone. Your task is to kill every enemy in the zone you choose.\"",
+          "act": "none"
+        },
+        {
+          "key": "items",
+          "val": "He gestures to the east. \"You can discover how to pick up items over there.\"",
+          "act": "none"
+        },
+        {
+          "key": "knowledge",
+          "val": "He gestures to the west. \"You can learn how to cast spells from over there.\"",
+          "act": "none"
+        }   
+      ]
+    },
+    "inventory": [],
+    "name": "Greeter",
+    "sprite": "musky_traveler",
+    "dspells": [],
+    "lspells": [],
+    "allegiance": "ally",
+    "clonable": false,
+    "portrait":"port_sil",
+    "stats": {
+      "ACC": "99",
+      "CON": "99",
+      "EVA": "99",
+      "FOR": "99",
+      "POW": "99",
+      "RES": "99",
+      "SPD": "99"
+    }
+  }           
+]

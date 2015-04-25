@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Levelup Test</title>
+<script type="text/javascript" src="./main.js"></script>
+<script type="text/javascript" src="./libs/CanvasInput.min.js"></script>
+<script type="text/javascript" src="./world/ai.js"></script>
+<script type="text/javascript" src="./world/actor/actor.js"></script>
+<script type="text/javascript" src="./world/actor/character.js"></script>
+<script type="text/javascript" src="./ui/a_uiElem.js"></script>
+<script type="text/javascript" src="./ui/create_overlay.js"></script>
+<script type="text/javascript" src="./ui/levelup_overlay.js"></script>
+<script type="text/javascript" src="./display/g2d.js"></script>
+<script>
+var normalize = function(x, A, B, C, D){
+    return C + (x-A)*(D-C)/(B-A);
+}
+
+function load(){
+    display = new g2d("benj");
+    display.draw(0, 0, 472, 288, "black");  
+
+    (function wait(){
+        if( display.is_ready().is_ready ){
+            console.log(display.is_ready());
+            main();
+            return;
+        }
+        window.requestAnimationFrame(wait)
+    })(); 
+}
+
+function main(){
+	console.log("START");
+    lvl = new LevelupOverlay(0, 0, display);
+
+    var sprite = "female_lancer";
+    var pc = {
+        sprite:sprite,
+        xpos:0,
+        ypos:0,
+        class:sprite.split("_")[1],
+        stats:{
+            POW:9,
+            ACC:13,
+            FOR:12,
+            CON:11,
+            RES:17,
+            SPD:5,
+            EVA:5,
+            curr_hp: 100,
+            curr_mp:20
+        }
+    }
+
+    ch = new Character(pc.xpos, pc.ypos, pc.sprite, "Adalais", display, false, {}, pc.stats);
+    ch.class = pc.class;
+    lvl.reset_with_char(ch);
+
+    (function draw(){
+        window.requestAnimationFrame(draw);
+        display.draw(0, 0, 472, 288, "black");  
+        lvl.draw();
+    })();
+
+
+    document.onkeydown = function(ev){
+        if( ev.keyCode == 82 && ev.ctrlKey || ev.keyCode == 116){
+            return;
+        }        
+
+        if( ev.which != 187 && ev.which != 189 && ev.which != 17 ){
+            ev.preventDefault();
+        }
+    }
+
+    document.onkeyup = function(ev){
+
+    }
+
+    display.canvas.onmousedown = function(ev){
+        var canv_offset = display.getOffset( document.getElementById( display.id ) );
+        var dims = display.get_dims();
+        var newx = Math.floor(normalize( ev.clientX, 0, dims.css_wid, 0, dims.canv_wid ));
+        var newy = Math.floor(normalize( ev.clientY, 0, dims.css_hgt, 0, dims.canv_hgt ));
+        var ev2 = {};
+        ev2.clientX = newx;
+        ev2.clientY = newy;          
+
+    	lvl.contains(newx, newy);
+    }
+    // display.draw_text("Loading...", 472/2, 288/3, "Verdana", "white", "16", "Normal", false);
+    // display.draw(10, 130, 472-20, 40, "white");
+}
+
+function dlog(msg){
+}
+function log(msg, box){ 
+}
+
+</script>
+
+</head>
+<body onload="load()">
+   <!--  <div id="outside2" style="width:10px; height:10px"> -->
+   <div id="outside2">
+        <div id="canvas_wrapper" class="canvas_border">
+            <!-- <canvas id="benj" width="252" height="288" /> -->
+<!--             <canvas id="benj" width="472" height="288" style="outline: none;
+                                         -webkit-tap-highlight-color: rgba(255, 255, 255, 0);" /> -->
+        </div>    
+    </div>
+</body>
+</html>

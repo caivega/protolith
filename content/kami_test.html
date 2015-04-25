@@ -1,0 +1,223 @@
+<html>
+<head>
+<script src="libs/kami.js"></script>
+<script src="game/timer.js"></script>
+<script src="display/g2d.js"></script>
+<script>
+
+var sprites = [];
+var width = window.innerWidth - 16;
+var height = window.innerHeight - 16;
+var fpsframe = 0;
+var timer = new Timer();
+var tex0;
+var assoc = [];
+
+var normalize = function(x, A, B, C, D){
+    return C + (x-A)*(D-C)/(B-A);
+};
+
+function add_sprite(tex0){
+	var w = 308;
+	var h = 128;
+
+	var gx = Math.floor( normalize( Math.random(), 0, 1, 0, w/28 ) );
+	var gy = Math.floor( normalize( Math.random(), 0, 1, 0, h/32 ) );
+
+	var sx = gx * 28;
+	var sy = gy * 32;
+
+	var region = new kami.TextureRegion( tex0, sx, sy, 28, 32 );
+
+	var x = Math.floor( normalize( Math.random(), 0, 1, 0, width - 28 ) );
+	var y = Math.floor( normalize( Math.random(), 0, 1, 0, height - 32 ) );
+
+	sprites.push( {
+		region:region,
+		name: assoc[ gx + gy*(w/28) ],
+		x:x,
+		y:y,
+		w:28,
+		h:32
+	} );
+
+	console.log("Total", sprites.length,"Add", JSON.stringify({
+		name: assoc[ gx + gy*(w/28) ],
+		sx:sx,
+		sy:sy,
+		x:x,
+		y:y,
+		w:28,
+		h:32
+	}) );
+}
+
+var KamiRenderer = function(){
+    this.context = new kami.WebGLContext(width, height);
+    var batch = new kami.SpriteBatch(this.context);
+    document.body.appendChild(this.context.view);
+
+	//Create a new batcher for 2D sprites
+	this.batch = new kami.SpriteBatch(this.context);
+
+	//Create a new texture. This will load the URL asynchronously
+	tex0 = new kami.Texture(this.context, "display/images/pcs.png");
+	tex0.width = 308;
+	tex0.height = 128;
+};
+
+KamiRenderer.prototype.init = function(){
+	tex0.setFilter(kami.Texture.Filter.LINEAR);
+};
+
+KamiRenderer.prototype.render = function(){
+    var gl = this.context.gl.clear( this.context.gl.COLOR_BUFFER_BIT );
+    this.batch.begin();
+
+    for( var i in sprites ){
+    	this.batch.drawRegion( 
+    		sprites[i].region, sprites[i].x, sprites[i].y, sprites[i].w, sprites[i].h
+    	);
+    }
+    this.batch.end();
+};
+
+KamiRenderer.prototype.clear = function(){
+	this.context.view.style.display = "none";
+};
+
+KamiRenderer.prototype.show = function(){
+	this.context.view.style.display = "block";
+};
+
+var CanvasRenderer = function(){
+
+};
+
+CanvasRenderer.prototype.init = function(){
+	var spritenames = [
+		"green_fella",
+		"male_bowman",
+		"mr_stud",
+		"purple_dress",
+		"archerette",
+		"gunther",
+		"big_mage",
+		"javy",
+		"black_knight",
+		"rebecca",
+		"blood_priest"
+	];
+
+	function getdir(ind){
+		ind = ind%4;
+		var app;
+	    switch(ind){
+	        case 0: app = "dr"; break;
+	        case 1: app = "dl"; break;
+	        case 2: app = "ar"; break;
+	        case 3: app = "al"; break;
+	    }
+	    return "_"+app;
+	}
+	for( var i = 0; i < 11*4; i++ ){
+		assoc.push( spritenames[ Math.floor( i / 4 ) ] + getdir( i ) );
+	}
+
+	this.display = new g2d("benj");
+};
+
+CanvasRenderer.prototype.render = function(){
+    for( var i in sprites ){
+    	this.display.draw_sprite( 
+    		sprites[i].name, sprites[i].x, sprites[i].y
+    	);
+    }
+};
+
+CanvasRenderer.prototype.clear = function(){
+	this.display.canvas.style.display = "none";
+};
+
+CanvasRenderer.prototype.show = function(){
+	this.display.canvas.style.display = "block";
+};
+
+function main(){
+
+	var captain = window;
+	width = window.innerWidth - 16;
+	height = window.innerHeight - 16;
+
+	document.onclick = function(ev){
+		console.log("CLICK", ev.clientX, width);
+		if( ev.clientX < width/2 ){
+			if( currentrenderer === canv ){
+				console.log("Renderer is kami");
+				currentrenderer = kamv;
+				canv.clear();
+				kamv.show();
+			} else {
+				console.log("Renderer is canv");
+				currentrenderer = canv;
+				kamv.clear();
+				canv.show();
+			}
+		} else {
+			for( var i = 0; i < 100; i++ ){
+				add_sprite( tex0 );
+			}
+		}
+	};
+
+	var canv = new CanvasRenderer();
+	var kamv = new KamiRenderer();
+
+	canv.init();
+	kamv.init();
+
+	console.log(kamv);
+
+	add_sprite(tex0);
+
+	var currentrenderer = canv;
+
+	console.log("READY", canv.display.is_ready() );
+
+	(function load(){
+		console.log("LOADING");
+		var rdy = canv.display.is_ready();
+		if( rdy.max === rdy.curr ){
+			console.log("BEGIN");
+			render();
+		} else {
+			setTimeout( load, 50 );
+		}
+	})();
+	function render() {
+	    requestAnimationFrame(render);
+
+        if( captain.fpsframe === 0 ){
+            captain.timer.time( "fps" );
+        }
+
+        currentrenderer.render();
+
+        if( captain.fpsframe === 59 ){
+            var time = captain.timer.timeEnd( "fps" );
+            captain.fps = Math.round( 60 / (time/1000) );
+            console.log( "FPS", captain.fps );
+            captain.fpsframe = 0;
+        } else {
+            captain.fpsframe++;
+        }	    
+	}
+}
+
+window.onload = main;
+
+</script>
+</head>
+<body>
+</body>
+</html>

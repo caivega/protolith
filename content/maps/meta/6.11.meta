@@ -1,0 +1,14 @@
+[
+
+{
+	"type":"SingleNotification",
+	"name":"Notification1",
+	"xpos":5,
+	"ypos":2,
+	"pers":false,
+	"next":"none",
+	"text":"This is a test",
+	"portrait":"port_exclaim"
+}
+
+]

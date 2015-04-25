@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- <title>Protolith - by Ben "Jammin" Brown</title> -->
+<title>test9236920</title>
+<!--<script type="text/javascript" src="jquery-1.7.2.min.js"></script> -->
+
+<script type="text/javascript" src="./main.js"></script>
+<script type="text/javascript" src="./libs/buzz.min.js"></script>
+<script type="text/javascript" src="./socket/socket.js"></script>
+<script type="text/javascript" src="./chat/chat.js"></script>
+<script type="text/javascript" src="./display/display.js"></script>
+<script type="text/javascript" src="./display/particle.js"></script>
+<script type="text/javascript" src="./maps/maploader.js"></script>
+<script type="text/javascript" src="./maps/specialnode.js"></script>
+<script type="text/javascript" src="./cutscenes/cutsceneLoader.js"></script>
+<script type="text/javascript" src="./game/game.js"></script>
+<script type="text/javascript" src="./game/abstractState.js"></script>
+<script type="text/javascript" src="./game/loadingState.js"></script>
+<script type="text/javascript" src="./game/worldState.js"></script>
+<script type="text/javascript" src="./game/createPartyState.js"></script>
+<script type="text/javascript" src="./game/menuState.js"></script>
+<script type="text/javascript" src="./game/transitionState.js"></script>
+<script type="text/javascript" src="./game/fadeState.js"></script>
+<script type="text/javascript" src="./game/cutsceneState.js"></script>
+<!-- <script type="text/javascript" src="./game/helpers/worldStateShortcuts.js"></script> -->
+<!-- <script type="text/javascript" src="./game/helpers/worldStateUIManager.js"></script> -->
+<!-- <script type="text/javascript" src="./game/helpers/worldStateButtonManager.js"></script> -->
+<script type="text/javascript" src="./save/save.js"></script>
+<script type="text/javascript" src="./sound/sound.js"></script>
+<script type="text/javascript" src="./world/world.js"></script>
+<script type="text/javascript" src="./world/worldloader.js"></script>
+<script type="text/javascript" src="./world/spells.js"></script>
+<script type="text/javascript" src="./world/ai.js"></script>
+<script type="text/javascript" src="./world/combatengine.js"></script>
+<script type="text/javascript" src="./world/tile.js"></script>
+<script type="text/javascript" src="./world/item.js"></script>
+<script type="text/javascript" src="./world/statuseffect.js"></script>
+<script type="text/javascript" src="./world/player.js"></script>
+<script type="text/javascript" src="./world/actor/actor.js"></script>
+<script type="text/javascript" src="./world/actor/character.js"></script>
+<script type="text/javascript" src="./world/actor/generic.js"></script>
+<script type="text/javascript" src="./world/actor/tile.js"></script>
+<script type="text/javascript" src="./world/mode/gamemode.js"></script>
+<script type="text/javascript" src="./world/mode/combatmode.js"></script>
+<script type="text/javascript" src="./world/mode/townmode.js"></script>
+<script type="text/javascript" src="./world/mode/outsidemode.js"></script>
+<script type="text/javascript" src="./ui/uiElem.js"></script>
+<script type="text/javascript" src="./ui/createoverlay.js"></script>
+<script type="text/javascript" src="./ui/levelupoverlay.js"></script>
+<script type="text/javascript" src="./ui/keyboard.js"></script>
+
+<script type="text/javascript" src="./game/teststates/test_uistate.js"></script>
+<script type="text/javascript" src="./game/timer.js"></script>
+<script type="text/javascript" src="./world/interface.js"></script>
+<script type="text/javascript" src="./ui/clean_uielem.js"></script>
+<script type="text/javascript" src="./ui/overlays/clean_pclistoverlay.js"></script>
+<script type="text/javascript" src="./ui/overlays/clean_movementoverlay.js"></script>
+<script type="text/javascript" src="./ui/overlays/clean_menuoverlay.js"></script>
+<script type="text/javascript" src="./ui/overlays/clean_actionoverlay.js"></script>
+<script type="text/javascript" src="./ui/overlays/clean_statusoverlay.js"></script>
+<script type="text/javascript" src="./ui/overlays/clean_inventoryoverlay.js"></script>
+<script type="text/javascript" src="./ui/overlays/clean_magicoverlay.js"></script>
+<script type="text/javascript" src="./ui/overlays/clean_pickupoverlay.js"></script>
+<script type="text/javascript" src="./ui/overlays/clean_dialogueoverlay.js"></script>
+<script type="text/javascript" src="./ui/modals/clean_modalreorder.js"></script>
+<script type="text/javascript" src="./ui/modals/clean_modalequip.js"></script>
+<script type="text/javascript" src="./ui/modals/clean_modalgive.js"></script>
+<script type="text/javascript" src="./ui/modals/clean_modaldrop.js"></script>
+<script type="text/javascript" src="./ui/modals/clean_modaliteminfo.js"></script>
+<script type="text/javascript" src="./ui/modals/clean_modalspellinfo.js"></script>
+<script type="text/javascript" src="./ui/clean_menuheader.js"></script>
+<script type="text/javascript" src="./ui/clean_notification.js"></script>
+<script type="text/javascript" src="./ui/clean_selector.js"></script>
+
+<script>
+/* jshint browser: true */
+/* global app, console, window */
+
+(function(){
+"use strict";
+
+String.prototype.repeat = function( num ){
+    return new Array( num + 1 ).join( this );
+};
+
+function init(){
+    console.log("INIT");
+    window.game = new app.game.Game();
+}
+
+window.onload = init;
+
+})();
+
+</script>
+
+</head>
+<body>
+    <div id="outside2">
+        <div id="canvas_wrapper" class="canvas_border"></div>
+    </div>
+</body>
+</html>

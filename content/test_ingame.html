@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- <title>Protolith - by Ben "Jammin" Brown</title> -->
+<title>test9236920</title>
+<!--<script type="text/javascript" src="jquery-1.7.2.min.js"></script> -->
+
+<script type="text/javascript" src="././main.js"></script>
+<script type="text/javascript" src="./libs/CanvasInput.min.js"></script>
+<script type="text/javascript" src="./libs/FileSaver.min.js"></script>
+<script type="text/javascript" src="./libs/buzz.min.js"></script>
+<script type="text/javascript" src="./socket/socket.js"></script>
+<script type="text/javascript" src="./chat/chat.js"></script>
+<script type="text/javascript" src="./maps/ObjTree.js"></script>
+<script type="text/javascript" src="./maps/maploader.js"></script>
+<script type="text/javascript" src="./maps/specialnode.js"></script>
+<script type="text/javascript" src="./cutscenes/cutsceneLoader.js"></script>
+<script type="text/javascript" src="./game/game.js"></script>
+<script type="text/javascript" src="./game/abstractState.js"></script>
+<script type="text/javascript" src="./game/loadingState.js"></script>
+<script type="text/javascript" src="./game/worldState.js"></script>
+<script type="text/javascript" src="./game/editState.js"></script>
+<script type="text/javascript" src="./game/editStateBin/esUI.js"></script>
+<script type="text/javascript" src="./game/createPartyState.js"></script>
+<script type="text/javascript" src="./game/menuState.js"></script>
+<script type="text/javascript" src="./game/transitionState.js"></script>
+<script type="text/javascript" src="./game/fadeState.js"></script>
+<script type="text/javascript" src="./game/cutsceneState.js"></script>
+<script type="text/javascript" src="./game/extrabin/worldStateShortcuts.js"></script>
+<script type="text/javascript" src="./game/extrabin/worldStateUIManager.js"></script>
+<script type="text/javascript" src="./game/extrabin/worldStateButtonManager.js"></script>
+<script type="text/javascript" src="./save/save.js"></script>
+<script type="text/javascript" src="./sound/sound.js"></script>
+<script type="text/javascript" src="./world/spells.js"></script>
+<script type="text/javascript" src="./world/world.js"></script>
+<script type="text/javascript" src="./world/worldloader.js"></script>
+<script type="text/javascript" src="./world/ai.js"></script>
+<script type="text/javascript" src="./world/combatengine.js"></script>
+<script type="text/javascript" src="./world/tile.js"></script>
+<script type="text/javascript" src="./world/item.js"></script>
+<script type="text/javascript" src="./world/statuseffect.js"></script>
+<script type="text/javascript" src="./world/player.js"></script>
+<script type="text/javascript" src="./world/actor/actor.js"></script>
+<script type="text/javascript" src="./world/actor/character.js"></script>
+<script type="text/javascript" src="./world/actor/overlays.js"></script>
+<script type="text/javascript" src="./world/actor/tile.js"></script>
+<script type="text/javascript" src="./world/mode/gamemode.js"></script>
+<script type="text/javascript" src="./world/mode/combatmode.js"></script>
+<script type="text/javascript" src="./world/mode/townmode.js"></script>
+<script type="text/javascript" src="./world/mode/outsidemode.js"></script>
+<script type="text/javascript" src="./display/g2d.js"></script>
+<script type="text/javascript" src="./display/particle.js"></script>
+<script type="text/javascript" src="./ui/ui.js"></script>
+<script type="text/javascript" src="./ui/a_uiElem.js"></script>
+<script type="text/javascript" src="./ui/inventoryoverlay.js"></script>
+<script type="text/javascript" src="./ui/magicoverlays.js"></script>
+<script type="text/javascript" src="./ui/createoverlay.js"></script>
+<script type="text/javascript" src="./ui/menuoverlay.js"></script>
+<script type="text/javascript" src="./ui/loadoverlay.js"></script>
+<script type="text/javascript" src="./ui/levelupoverlay.js"></script>
+<script type="text/javascript" src="./ui/notification.js"></script>
+<script type="text/javascript" src="./ui/keyboard.js"></script>
+
+<script type="text/javascript" src="./game/teststates/test_uistate.js"></script>
+<script type="text/javascript" src="./game/timer.js"></script>
+<script type="text/javascript" src="./ui/clean_uielem.js"></script>
+<script type="text/javascript" src="./ui/clean_menuheader.js"></script>
+<script type="text/javascript" src="./ui/clean_modalreorder.js"></script>
+<script type="text/javascript" src="./ui/clean_modaliteminfo.js"></script>
+<script type="text/javascript" src="./ui/clean_pclistoverlay.js"></script>
+<script type="text/javascript" src="./ui/clean_menuoverlay.js"></script>
+<script type="text/javascript" src="./ui/clean_statusoverlay.js"></script>
+
+<script>
+
+var canvas;
+
+var APP_JS = false;
+var APP_JS_FS;
+var APP_JS_CONSOLE;
+
+String.prototype.repeat = function( num ){
+    return new Array( num + 1 ).join( this );
+}
+
+var myGame;
+function init(){
+
+    function load_game(game) { 
+        var running = true;
+        (function ld(){
+            if( running === false ){
+                return;
+            }
+
+            window.requestAnimationFrame(ld); 
+            var rdy = game.is_ready();
+            if(rdy.is_ready){
+                console.log("BEGIN TEST");
+                running = false;
+                isLoaded = true;
+                game.change_state("test_IngameState", {});
+            } else {
+                game.display.draw(0, 0, 472, 288, "black");
+                game.display.draw_text("Loading...", 472/2, 288/3, "Verdana", "green", 
+                    "16", "Normal", false);
+                game.display.draw(10, 130, 472-20, 40, "white");
+                game.display.draw(15, 140, normalize(rdy.curr, 0, rdy.max, 10, 472-30), 
+                    20, "grey");
+            }
+        })();
+    }
+
+
+    window.load_game = load_game;
+
+    var myDisplay;
+    myGame = new Game(  );
+}
+
+window.onload = init;
+
+function clog(msg){
+    console.log("GAME "+msg);
+}
+function dlog(msg){
+    log(msg, "debug");
+}
+function log(msg, box){ 
+}
+
+</script>
+
+</head>
+<body>
+   <!--  <div id="outside2" style="width:10px; height:10px"> -->
+   <div id="outside2">
+        <div id="canvas_wrapper" class="canvas_border">
+            <!-- <canvas id="benj" width="252" height="288" /> -->
+<!--             <canvas id="benj" width="472" height="288" style="outline: none;
+                                         -webkit-tap-highlight-color: rgba(255, 255, 255, 0);" /> -->
+        </div>    
+    </div>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Keyboard Test</title>
+<script type="text/javascript" src="./main.js"></script>
+<script type="text/javascript" src="./libs/CanvasInput.min.js"></script>
+<!-- <script type="text/javascript" src="./world/spells.js"></script> -->
+<!-- <script type="text/javascript" src="./world/world.js"></script> -->
+<!-- <script type="text/javascript" src="./world/ai.js"></script> -->
+<!-- <script type="text/javascript" src="./world/actor.js"></script> -->
+<!-- <script type="text/javascript" src="./world/combat_engine.js"></script> -->
+<!-- <script type="text/javascript" src="./world/combat_mode.js"></script> -->
+<!-- <script type="text/javascript" src="./world/town_mode.js"></script> -->
+<!-- <script type="text/javascript" src="./world/tile.js"></script> -->
+<!-- <script type="text/javascript" src="./world/item.js"></script> -->
+<!-- <script type="text/javascript" src="./world/status_effect.js"></script> -->
+<script type="text/javascript" src="./display/g2d.js"></script>
+<!-- <script type="text/javascript" src="./display/particle.js"></script> -->
+<script type="text/javascript" src="./ui/keyboard.js"></script>
+<script>
+var normalize = function(x, A, B, C, D){
+    return C + (x-A)*(D-C)/(B-A);
+}
+
+function main(){
+	console.log("START");
+	var display = new g2d("benj");
+    display.draw(0, 0, 472, 288, "black");
+
+    var keyboard = new OnScreenKeyboard(display);
+    setInterval(function(){
+    	display.clear_area(0, 0, 472, 288);
+    	keyboard.draw();
+    }, 25);
+
+
+    document.onkeydown = function(ev){
+    	keyboard.keydown(ev);
+
+        if( ev.keyCode == 82 && ev.ctrlKey || ev.keyCode == 116){
+        	console.log("CTRL R PRESSED");
+            return;
+        }        
+
+        if( ev.which != 187 && ev.which != 189 && ev.which != 17 ){
+            ev.preventDefault();
+        }
+    }
+
+    document.onkeyup = function(ev){
+        keyboard.keyup(ev);
+    }
+
+    display.canvas.onmousedown = function(ev){
+        var canv_offset = display.getOffset( document.getElementById( display.id ) );
+        var dims = display.get_dims();
+        var newx = Math.floor(normalize( ev.clientX, 0, dims.css_wid, 0, dims.canv_wid ));
+        var newy = Math.floor(normalize( ev.clientY, 0, dims.css_hgt, 0, dims.canv_hgt ));
+        var ev2 = {};
+        ev2.clientX = newx;
+        ev2.clientY = newy;          
+
+    	keyboard.contains(newx, newy);
+    }
+    // display.draw_text("Loading...", 472/2, 288/3, "Verdana", "white", "16", "Normal", false);
+    // display.draw(10, 130, 472-20, 40, "white");
+}
+
+function dlog(msg){
+    log(msg, "debug");
+    //console.log(msg);
+}
+function log(msg, box){ 
+    // if( !box )  box = "debug";
+    // var chbox = $("#"+box);
+    // var timestamp=get_timestamp();
+    // if(box != "debug")
+    //     timestamp = "";
+    // chbox.append("<div style='padding-left:3px'>"+timestamp+msg+"</div>"); 
+    //Please reenable this when you get debug and chat working
+    //chbox.scrollTop(chbox.get(0).scrollHeight); 
+}
+
+</script>
+
+</head>
+<body onload="main()">
+   <!--  <div id="outside2" style="width:10px; height:10px"> -->
+   <div id="outside2">
+        <div id="canvas_wrapper" class="canvas_border">
+            <!-- <canvas id="benj" width="252" height="288" /> -->
+<!--             <canvas id="benj" width="472" height="288" style="outline: none;
+                                         -webkit-tap-highlight-color: rgba(255, 255, 255, 0);" /> -->
+        </div>    
+    </div>
+</body>
+</html>

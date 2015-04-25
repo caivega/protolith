@@ -1,0 +1,447 @@
+<html>
+<head>
+<style>
+.leftindent{
+	width:100px;
+	font-weight:bold;
+}
+.rightindent{
+	width:100px;
+}
+.plus{
+	background-color:#339933;
+	color:white;
+}
+.minus{
+	background-color:#993333;
+	color:white;
+}
+
+</style>
+
+<script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-3.0.0.js"></script>
+<script src="http://petrode.com/static_scripts/jquery_devel.js"></script>
+
+<script>
+
+var npcmaker;
+function main(){
+	npcmaker = new NPC_Maker();
+	npcmaker.start();
+}
+
+function NPC_Maker(){
+	this.npclist = ko.observableArray( [] );
+	this.npclist.subscribe( function( newval ){
+		$("#npcsel").attr("size", newval.length );
+		$("#npcsel").attr("height", "100%");
+		$("#cont").css("height", "100%");
+	});
+
+	this.cnpc = ko.observable( this.make_npc() );
+	this.cdialogue = ko.observable( "" );
+	this.ckey = ko.observable("");
+	this.npcclicked = ko.observable( false );
+
+	this.isloaded = false;
+}
+
+NPC_Maker.prototype.start = function(){
+	var captain = this;
+	this.load_npclist();
+	var id = setInterval( function(){
+		if( captain.is_ready() ){
+			captain.init_ui();
+			clearInterval( id );
+		}
+	}, 50);
+}
+
+NPC_Maker.prototype.is_ready = function(){
+	return this.isloaded;
+}
+
+NPC_Maker.prototype.populate_list = function(jsonstr){
+	var list = JSON.parse(jsonstr);
+	var captain = this;
+
+	function getdiaglist(d){
+		var ret = ko.observableArray([]);
+		for( var i in d ){
+			var dobj = {};
+			dobj.key = ko.observable( d[i].key );
+			dobj.val = ko.observable( d[i].val );
+			dobj.act = ko.observable( d[i].act );
+			ret.push( dobj );
+		}
+		return ret;
+	}
+
+	function parsenpc(list){
+		var obj = {};
+		for( var i in list ){
+			if( i === "dialogue" ){
+				obj.dialogue = ko.observable({});
+				for( var j in list[i] ){
+					obj.dialogue()[j] = getdiaglist(list[i][j]);
+				}
+			} else if( i === "stats" ){
+				var subobj = list[i];
+				obj[i] = {};
+				for( var j in subobj ){
+					obj[i][j] = ko.observable( list[i][j] );
+				}
+			} else {
+				obj[i] = ko.observable( list[i] );
+			}
+		}
+
+		if(!("portrait" in obj ) ) obj.portrait = ko.observable("none");
+
+		captain.npclist.push(obj);
+	}
+
+	for( var i in list){
+		parsenpc(list[i]);
+	}
+
+	ko.applyBindings( this, $("#bod")[0] );
+}
+
+NPC_Maker.prototype.load_npclist = function(){
+    var captain = this;
+    var request = new XMLHttpRequest();
+    var src = "./Protolith.npc";
+    request.open("GET", src, false);
+
+    request.onreadystatechange = function() {
+        if (request.readyState == 4) {
+        	captain.populate_list( request.responseText );
+        	captain.isloaded = true; 
+        }
+    }
+
+    request.send();  
+}
+
+NPC_Maker.prototype.init_ui = function(){
+	console.log("NPC list loaded", this.npclist() );
+}
+
+NPC_Maker.prototype.format_npc = function(npc){
+	console.log("format");
+	return "<b>"+npc.name+"</b>";
+}
+
+NPC_Maker.prototype.format_json = function(json){
+	var str = ko.toJSON(json);
+	var ret = "";
+	var tabct = 0;
+	var disablecomma = false;
+
+	function gettabs(){
+		var ret = "";
+		for( var i = 0; i < tabct; ++i ) ret = ret + " ";
+		return ret;
+	}
+
+	for( var i in str ){
+		if( str[i] === "[" || str[i] === "{"){
+			tabct++;
+			ret = ret + str[i] + "\n" + gettabs(); 
+		} else if( str[i] === "," && !disablecomma ){
+			ret = ret + str[i] + "\n" + gettabs();
+		} else if( str[i] === "]" || str[i] === "}" ){
+			tabct--;
+			ret = ret + "\n" + gettabs() + str[i]; 
+		} else {
+			if( str[i] === "\"" && str[i-1] != "\\" ) disablecomma = !disablecomma;
+			ret = ret + str[i];
+		}
+	}
+	return ret;
+}
+	
+NPC_Maker.prototype.format_sprite = function(spritename){
+	if( spritename === undefined ) return "";
+	return spritename();
+}
+
+NPC_Maker.prototype.click_npc = function(npc){
+	this.cnpc(npc);
+	this.npcclicked(true);
+	if( !(this.cdialogue() in this.cnpc().dialogue()) ){
+		this.cdialogue("");
+	} else {
+		this.cdialogue("d1");
+		this.ckey("look");
+	}
+}
+
+NPC_Maker.prototype.has_name = function(name){
+	var arr = this.npclist();
+	for( var i in arr ){
+		if( arr[i].name() === name ) return i; 
+	}
+	return -1;
+}
+
+NPC_Maker.prototype.make_npc = function(){
+	var ctr = 0;
+	var name = "Addison Timlin";
+	var fname = name + ctr;
+	while( this.has_name(fname) > -1 ){
+		ctr++;
+		fname = name+ctr;  
+	}
+
+	var npc = {
+		dialogue:ko.observableArray([]),
+		name:ko.observable(fname),
+		ai_town:ko.observable("none"),
+		ai_combat:ko.observable("none"),
+		inventory:ko.observableArray([]),
+		sprite:ko.observable("small_farmer"),
+		dspells:ko.observableArray([]),
+		lspells:ko.observableArray([]),
+		allegiance:ko.observable("ally"),
+		stats:{
+	    	ACC: ko.observable("1"),
+	    	CON: ko.observable("1"),
+	    	EVA: ko.observable("1"),
+	    	FOR: ko.observable("1"),
+	    	POW: ko.observable("1"),
+	    	RES: ko.observable("1"),
+	    	SPD: ko.observable("1")
+		}
+	}
+	return npc;
+}
+
+NPC_Maker.prototype.add_npc = function(){
+	var npc = this.make_npc();
+	this.npclist().push(npc);
+	this.cnpc( npc );
+	this.npclist.valueHasMutated();
+	$("[id='"+npc.name()+"']").click();
+	$("[id='"+npc.name()+"']").attr("selected", true);
+}
+
+NPC_Maker.prototype.rem_npc = function(){
+	var name = this.cnpc().name();
+	var ind = this.has_name( name );
+	if( ind > -1 ){
+		this.npclist.splice(ind, 1);
+		this.cnpc( this.npclist()[0] );
+		$("[id='"+this.cnpc().name()+"']").click();
+		$("[id='"+this.cnpc().name()+"']").attr("selected", true);
+	} else {
+		console.error("No npc of name '"+name+"' exists.");
+	}
+}
+
+NPC_Maker.prototype.add_diag = function(){
+	var ctr = 1;
+	var diag = "d";
+	var fdiag = diag + ctr;
+
+	var diagobj = this.cnpc().dialogue();
+	while( fdiag in diagobj ){
+		ctr++;
+		fdiag = diag + ctr;
+	}
+
+	diagobj[ fdiag ] = ko.observableArray([]);
+	var dialogs = diagobj[ fdiag ];
+
+	dialogs.push({
+		key:ko.observable("look"),
+		val:ko.observable("Default look."),
+		act:ko.observable("none")
+	})
+	dialogs.push({
+		key:ko.observable("name"),
+		val:ko.observable("Default name."),
+		act:ko.observable("none")
+	})
+	dialogs.push({
+		key:ko.observable("job"),
+		val:ko.observable("Default job."),
+		act:ko.observable("none")
+	})
+	this.cnpc().dialogue.valueHasMutated();
+
+	this.cdialogue( fdiag );
+}
+
+NPC_Maker.prototype.rem_diag = function(){
+	var diags = this.cnpc().dialogue();
+	if( this.cdialogue() in diags ){
+		delete diags[ this.cdialogue() ];
+		this.cnpc().dialogue.valueHasMutated();
+		this.cdialogue();
+	}
+}
+
+NPC_Maker.prototype.diag_has_key = function(diag, key){
+	console.log("HAS KEY", diag, key );
+	for( var i in diag ){
+		if( diag[i].key() === key ) return i;
+	}
+	return -1;
+}
+
+NPC_Maker.prototype.add_key = function(){
+	if( !(this.cdialogue() in this.cnpc().dialogue()) ){
+		this.cdialogue("d1");
+		if( !(this.cdialogue() in this.cnpc().dialogue()) )
+			this.add_diag();
+	} 
+	var dialogs = this.cnpc().dialogue()[ this.cdialogue() ];
+
+	var ctr = 0;
+	var keyname = "default";
+	var fkeyname = keyname+ctr;
+	while( this.diag_has_key( dialogs(), fkeyname ) > -1 ){
+		ctr++;
+		fkeyname = keyname+ctr;
+	}
+
+	dialogs.push({
+		key:ko.observable(fkeyname),
+		val:ko.observable("Default."),
+		act:ko.observable("none")
+	})
+	this.cnpc().dialogue.valueHasMutated();
+	$("[id='d"+fkeyname+this.cnpc().name()+"']").click();
+	$("[id='d"+fkeyname+this.cnpc().name()+"']").attr("selected", true);
+	this.ckey(fkeyname);
+}
+
+NPC_Maker.prototype.rem_key = function(){
+	if( !(this.cdialogue() in this.cnpc().dialogue()) ){
+		this.cdialogue("d1");
+		if( !(this.cdialogue() in this.cnpc().dialogue()) )
+			this.add_diag();
+	} 
+
+	if( this.ckey() === "look" || this.ckey() === "name" || this.ckey() === "job" ){
+		return;
+	}
+
+	var dialogs = this.cnpc().dialogue()[ this.cdialogue() ];
+
+	var ind = this.diag_has_key( dialogs(), this.ckey() );
+	if( ind > -1 ){
+		dialogs.splice( ind, 1 );
+		this.ckey("look");
+	}
+}
+
+NPC_Maker.prototype.indent = function(left, right){
+	if( left === undefined || right === undefined ) return "";
+	return "<div class='leftindent'>"+left+
+		"</div><div class='rightindent'>&nbsp&nbsp"+right+"</div>";
+}
+
+NPC_Maker.prototype.get_stats = function(){
+	if( this.cnpc().stats === undefined ){
+		return [];
+	} else {
+		return Object.keys( this.cnpc().stats );
+	}
+}
+
+NPC_Maker.prototype.get_diags = function(){
+	if( this.cnpc().stats === undefined ){
+		return [];
+	} else {
+		return Object.keys( this.cnpc().dialogue() );
+	}
+}
+
+NPC_Maker.prototype.get_option_id = function( elem ){
+	return "d"+elem.key()+this.cnpc().name();
+}
+
+</script>
+
+</head>	
+<body id="bod" onload="main()">
+<div id="cont" style="height:100%">
+
+<div style="float:left; width:150px; border-right-style:solid; border-right-color:#BBBBBB; height:100%">
+	<br>
+	<select id="npcsel", size="100" data-bind="foreach: npclist">
+		<option data-bind="text: $data.name, click:function(e){$root.click_npc($data);}, attr:{value:$data.name, id:$data.name}"></option>
+	</select>
+</div>
+<div style="float:left; padding-left:10px;">
+	<button class="minus" style="float:left; width:65px; height:30px" data-bind="click:rem_npc">-NPC</button>
+	<button class="plus" style="float:left; width:65px; height:30px" data-bind="click:add_npc">+NPC</button><br>
+	<h2> Edit Here </h2>
+	<div data-bind="visible:npcclicked">
+		<div id="leftside" style="float:left">
+			<div> 
+				<b>Name:</b> 
+				<input data-bind="value:cnpc().name,valueUpdate:'input'"> </input>
+				<p><b>Sprite</b>
+					<div data-bind="html:format_sprite(cnpc().sprite)"></div>
+					<input type="text" data-bind="value:cnpc().sprite, valueUpdate: 'input'" />
+				</p> 
+				<p><b>Portrait</b>
+					<div data-bind="html:format_sprite(cnpc().portrait)"></div>
+					<input type="text" data-bind="value:cnpc().portrait, valueUpdate: 'input'" />
+				</p> 
+			</div>
+			<div style="padding-left:10px">
+				<div data-bind="html:indent('Town AI', cnpc().ai_town )"> </div>
+				<div data-bind="html:indent('Combat AI', cnpc().ai_combat )"> </div>
+			</div>
+			<p><b>Clonable</b> <input type="checkbox" data-bind="checked: cnpc().clonable"></input></p>
+			<p><b>Allegiance</b> 
+				<br><input type="radio" value="ally" data-bind="checked: cnpc().allegiance">Ally</input>
+				<br><input type="radio" value="enemy" data-bind="checked: cnpc().allegiance">Enemy</input>
+			</p>
+			<div style="width:200px" data-bind="foreach: get_stats()">
+				<div style="width:100px; height:30px">
+					<div style="float:left;width:50px" data-bind="html:'<b>'+$data+'</b>'"></div>
+					<input style="float:right;width:50px" data-bind="value:$root.cnpc().stats[ $data ], valueUpdate: 'input'"></input>
+				</div>
+			</div>
+		</div>
+		<div id="rightside" style="padding-left:25px; float:left">
+			<div data-bind="visible:cdialogue()!=''">
+				<div style="float:right;">
+				<button class="plus" style="float:right; width:65px; height:30px" data-bind="click:add_diag">+Diag</button>
+				<button class="minus" style="float:left; width:65px; height:30px" data-bind="click:rem_diag">-Diag</button><br>
+				<button class="plus" style="float:right; width:65px; height:30px" data-bind="click:add_key">+Key</button>
+				<button class="minus" style="float:left; width:65px; height:30px" data-bind="click:rem_key">-Key</button>
+				</div>
+				<select size="6" style="width:50px;float:left"; data-bind="foreach:Object.keys( cnpc().dialogue() ), value:cdialogue, valueUpdate:'input'" > 
+					<option data-bind="text: $data, attr:{value:$data}"> </option>
+				</select>
+				<select id="diagsel" style="width:120pxfloat:left" size="6" data-bind="foreach:cnpc().dialogue()[ cdialogue() ], value:ckey, valueUpdate:'input'">
+					<option data-bind="text: $data.key, attr:{value:$data.key, id:$root.get_option_id($data)}"></option>
+				</select>
+				<div data-bind="foreach:cnpc().dialogue()[ cdialogue() ];">
+					<div data-bind="visible:$data.key()===$root.ckey()">
+						Action
+						<input style="width:100px"; type="text" data-bind="value:$data.act"></input> 
+						<textarea style="float:right;width:100%;height:170px" data-bind="value:$data.val,valueUpdate: 'input'"></textarea>
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<textarea style="float:right;width:400px;height:100%" data-bind="text: format_json( cnpc() )">
+
+</textarea>
+
+</div>
+</body>
+</html>

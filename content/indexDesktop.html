@@ -1,0 +1,246 @@
+<html>
+<head>
+<title>Protolith - by Ben "Jammin" Brown</title>
+
+<meta charset="utf-8" name="viewport" content="width=device-width, user-scalable=no, initial-scale=1">
+<!-- <meta name="viewport"
+  content="width=device-width, height=device-height,
+  initial-scale=1.15, user-scalable=yes"> -->
+
+<style>
+ html,body{font:normal 0.9em arial,helvetica; display:block;}
+
+ .canvas_border{
+    width:800;
+    height:800; 
+ }
+
+ #benj{
+    background-repeat:no-repeat; 
+    background-size:100% 100%;  
+    -webkit-font-smoothing:antialiased;
+/*    position:absolute;
+    left:0;
+    top:0;*/
+ }
+
+.log{
+    font:normal 0.8em arial,helvetica;
+    width:605px;
+    height:150px; 
+    overflow:auto;    
+}
+
+.button_active{
+    border-style:inset;
+}
+
+.debug_log_head{
+    color:white;
+    background-color:#222222;
+    border-style:outset;
+    border-color:#555555;     
+}
+
+.debug_log{
+    color:white;
+    background-color:black;
+}
+
+.log_td{
+    width:290px;
+}
+
+.super_divv{
+    width:1000px;
+/*    height:2000px;*/
+}
+</style>
+
+<script src="libs/jquery-custom/js/jquery-1.8.2.js"></script>
+<script src="libs/jquery-custom/js/jquery-ui-1.9.0.custom.js"></script>
+<!--<script type="text/javascript" src="jquery-1.7.2.min.js"></script> -->
+
+<script type="text/javascript" src="main.js"></script>
+<script type="text/javascript" src="libs/CanvasInput.min.js"></script>
+<script type="text/javascript" src="libs/FileSaver.min.js"></script>
+<script type="text/javascript" src="global_vars.js"></script>
+<script type="text/javascript" src="socket/socket.js"></script>
+<script type="text/javascript" src="chat/chat.js"></script>
+<script type="text/javascript" src="maps/ObjTree.js"></script>
+<script type="text/javascript" src="maps/map_loader.js"></script>
+<script type="text/javascript" src="maps/special_node.js"></script>
+<script type="text/javascript" src="game/game.js"></script>
+<script type="text/javascript" src="game/abstractState.js"></script>
+<script type="text/javascript" src="game/loadingState.js"></script>
+<script type="text/javascript" src="game/worldState.js"></script>
+<script type="text/javascript" src="game/editState.js"></script>
+<script type="text/javascript" src="game/editStateBin/esUI.js"></script>
+<script type="text/javascript" src="game/createPartyState.js"></script>
+<script type="text/javascript" src="game/menuState.js"></script>
+<script type="text/javascript" src="game/transitionState.js"></script>
+<script type="text/javascript" src="save/save.js"></script>
+<script type="text/javascript" src="world/spells.js"></script>
+<script type="text/javascript" src="world/world.js"></script>
+<script type="text/javascript" src="world/ai.js"></script>
+<script type="text/javascript" src="world/actor.js"></script>
+<script type="text/javascript" src="world/combat_engine.js"></script>
+<script type="text/javascript" src="world/combat_mode.js"></script>
+<script type="text/javascript" src="world/town_mode.js"></script>
+<script type="text/javascript" src="world/tile.js"></script>
+<script type="text/javascript" src="world/item.js"></script>
+<script type="text/javascript" src="display/g2d.js"></script>
+<script type="text/javascript" src="display/particle.js"></script>
+<script type="text/javascript" src="input/input.js"></script>
+<script type="text/javascript" src="ui/ui.js"></script>
+<script type="text/javascript" src="ui/uiElem.js"></script>
+<script type="text/javascript" src="ui/inventory_overlay.js"></script>
+<script type="text/javascript" src="ui/magic_overlays.js"></script>
+<script type="text/javascript" src="ui/create_overlay.js"></script>
+<script type="text/javascript" src="ui/menu_overlay.js"></script>
+<script type="text/javascript" src="ui/load_overlay.js"></script>
+<script type="text/javascript" src="ping.js"></script>
+<!--
+TEMPORARY until a loader is put in for maps
+-->
+<script type="text/javascript" src="world/test_world.js"></script>
+
+
+<script>
+
+var canvas;
+
+//overlay types
+var OV_STATICANIM = 0;
+var OV_BOX = -100;
+var OV_PROJ = -50;
+
+//overlay names
+var OVN_PHYSD = 0;
+var OVN_ICYMAGIC = 0;
+var OVN_SELECT = 0;
+
+var PROJ_ICY = 0;
+
+var APP_JS = false;
+var APP_JS_FS;
+var APP_JS_CONSOLE;
+
+var require = function(){ console.log("This console.log should be overwritten by NodeJS") };
+
+addEventListener('app_js_start', function(e){
+    APP_JS = true;
+	APP_JS_FS = e.fs;
+	APP_JS_CONSOLE = e.log_append;
+	init();
+});
+
+setTimeout(function(){
+    if(!APP_JS){
+        init();
+        $("#canvas_wrapper").css("left", 100);
+    }
+}, 250);
+
+//   window.dispatchEvent(new Event('app-done'));
+// });
+
+String.prototype.repeat = function( num )
+{
+    return new Array( num + 1 ).join( this );
+}
+
+function init(){
+    //chat.init();
+    //init_spells();
+    var myDisplay;
+    var myWorld;
+    var ui;
+    var myGame;
+    var ML = new MapLoader();
+
+    $("#canvas_wrapper").show();
+    myDisplay = new g2d("benj");
+
+    // for( i = 0; i < ui_pcs.length; i++){     
+    //     $("#name_pc"+i).html(ui_pcs[i]);   
+    // }
+
+    //window.scrollTo(100, 50);
+    myGame = new Game( myDisplay, ML );
+
+    //set the ui to match the pcs in the combat list
+    //End combat init
+}
+
+var RUNNING_INTERVAL;
+
+// Utilities
+function clog(msg){
+    //log(msg, "all_chat");
+    //log(msg, "adventure_log");
+    console.log("GAME "+msg);
+}
+function dlog(msg){
+    log(msg, "debug");
+    //console.log(msg);
+}
+function log(msg, box){ 
+    if( !box )  box = "debug";
+    var chbox = $("#"+box);
+    var timestamp=get_timestamp();
+    if(box != "debug")
+        timestamp = "";
+    chbox.append("<div style='padding-left:3px'>"+timestamp+msg+"</div>"); 
+    //Please reenable this when you get debug and chat working
+    //chbox.scrollTop(chbox.get(0).scrollHeight); 
+}
+function get_timestamp(){
+    var dt = new Date();
+    var sec = dt.getSeconds();
+    var min = dt.getMinutes();
+    var hou = dt.getHours();
+    var stamp = "<"+hou+":"+min+":"+sec+"> ";
+    return stamp;
+}
+function onkey(event){ if(event.keyCode==13){ send(); } }
+function toggle_tab(tb){
+
+    ui.toggle_off_bottom_tabs();
+
+    var id = tb+"_list";
+    var area = $("#"+tb+"_area");
+    if( area.is(":visible") ){
+        //toggle off
+        area.hide();
+    } else {
+        //toggle on
+        area.show();        
+    }
+
+    window.scrollTo(0, 400);
+
+    $("#"+id).toggleClass("button_active");
+}
+
+</script>
+
+</head>
+<body onload="" 
+    style="dbackground-image:url('display/images/greyPaintTemplar.png');
+          dbackground-repeat:no-repeat;
+          dbackground-attachment:fixed;
+          dbackground-position:center;
+          dbackground-size:100%">
+    <div class="super_divv" id="super">
+        <div id="outside" style="float:left; width:800px; height:400px"> </div>
+    </div>
+    <div id="outside2" style="width:10px; height:10px">
+        <div id="canvas_wrapper" class="canvas_border">
+            <!-- <canvas id="benj" width="252" height="288" /> -->
+            <canvas id="benj" width="472" height="288" style="outline: none;
+                                         -webkit-tap-highlight-color: rgba(255, 255, 255, 0);" />
+        </div>    
+    </div>
+</body>
+</html>

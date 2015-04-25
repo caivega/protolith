@@ -1,0 +1,129 @@
+<html>
+<head>
+
+<script type="text/javascript" src="protolith.js"></script>
+<script>
+
+var canvas;
+
+//overlay types
+var OV_STATICANIM = 0;
+var OV_BOX = -100;
+var OV_PROJ = -50;
+
+//overlay names
+var OVN_PHYSD = 0;
+var OVN_ICYMAGIC = 0;
+var OVN_SELECT = 0;
+
+var PROJ_ICY = 0;
+
+var APP_JS = false;
+var APP_JS_FS;
+var APP_JS_CONSOLE;
+
+var require = function(){ console.log("This console.log should be overwritten by NodeJS") };
+
+addEventListener('app_js_start', function(e){
+    APP_JS = true;
+	APP_JS_FS = e.fs;
+	APP_JS_CONSOLE = e.log_append;
+	init();
+});
+
+setTimeout(function(){
+    if(!APP_JS){
+        init();
+        $("#canvas_wrapper").css("left", 100);
+    }
+}, 250);
+
+//   window.dispatchEvent(new Event('app-done'));
+// });
+
+String.prototype.repeat = function( num )
+{
+    return new Array( num + 1 ).join( this );
+}
+
+function init(){
+    //chat.init();
+    //init_spells();
+    var myDisplay;
+    var myWorld;
+    var ui;
+    var myGame;
+    var ML = new MapLoader();
+
+    $("#canvas_wrapper").show();
+    myDisplay = new g2d("benj");
+
+    console.log("INIT");
+
+    // for( i = 0; i < ui_pcs.length; i++){     
+    //     $("#name_pc"+i).html(ui_pcs[i]);   
+    // }
+
+    //window.scrollTo(100, 50);
+    myGame = new Game( myDisplay, ML );
+
+    //set the ui to match the pcs in the combat list
+    //End combat init
+}
+
+var RUNNING_INTERVAL;
+
+// Utilities
+function clog(msg){
+    //log(msg, "all_chat");
+    //log(msg, "adventure_log");
+    console.log("GAME "+msg);
+}
+function dlog(msg){
+    log(msg, "debug");
+    //console.log(msg);
+}
+function log(msg, box){ 
+    if( !box )  box = "debug";
+    var chbox = $("#"+box);
+    var timestamp=get_timestamp();
+    if(box != "debug")
+        timestamp = "";
+    chbox.append("<div style='padding-left:3px'>"+timestamp+msg+"</div>"); 
+    //Please reenable this when you get debug and chat working
+    //chbox.scrollTop(chbox.get(0).scrollHeight); 
+}
+function get_timestamp(){
+    var dt = new Date();
+    var sec = dt.getSeconds();
+    var min = dt.getMinutes();
+    var hou = dt.getHours();
+    var stamp = "<"+hou+":"+min+":"+sec+"> ";
+    return stamp;
+}
+function onkey(event){ if(event.keyCode==13){ send(); } }
+function toggle_tab(tb){
+
+    ui.toggle_off_bottom_tabs();
+
+    var id = tb+"_list";
+    var area = $("#"+tb+"_area");
+    if( area.is(":visible") ){
+        //toggle off
+        area.hide();
+    } else {
+        //toggle on
+        area.show();        
+    }
+
+    window.scrollTo(0, 400);
+
+    $("#"+id).toggleClass("button_active");
+}
+
+</script>
+</head>
+<body>
+    <div id="canvas_wrapper" class="canvas_border">
+    </div>
+</body>
