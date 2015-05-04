@@ -4,8 +4,6 @@
 (function(){
 "use strict";
 
-var CleanUIElem = app.ui.CleanUIElem;
-
 var CleanUIElem = app.ui.CleanUIElem = function(game,state,display){
 	this.game = game;
 	this.state = state;
@@ -21,8 +19,9 @@ var CleanUIElem = app.ui.CleanUIElem = function(game,state,display){
     this.FONT = "monospace";
     this.ERRORSPRITE = "port_exclaim";
 
+    this.transition = "fade";
     this.frame = 0;
-    this.animframes = 10;
+    this.animframes = 20;
 };
 
 CleanUIElem.prototype.light = [
@@ -83,21 +82,57 @@ CleanUIElem.prototype.propogate_click = function(){};
 CleanUIElem.prototype.propogate_unclick = function(){};
 
 CleanUIElem.prototype.animate_in_pre = function(checkthis){
+	if( checkthis.beginanimation ){
+		this.frame = 0;
+		checkthis.beginanimation = false;
+	}
+
 	if( checkthis.animating ){
-		var alpha = app.normalize( this.frame, 0, this.animframes, 0, 1);
-		this.display.context.globalAlpha = alpha;
+		if( this.transition === "fade" ){
+			var alpha = app.normalize( this.frame, 0, this.animframes, 0, 1);
+			this.display.context.globalAlpha = alpha;
+		} else if( this.transition === "menuslide" ){
+			var max = this.display.dimx - (this.display.dimx - this.display.right);
+			var xoffset = max - app.normalize( 
+				this.frame, 
+				0, this.animframes, 
+				0, max
+			);
+			this.display.context.translate( xoffset, 0 );
+		}
 	}
 };
 
 CleanUIElem.prototype.animate_out_pre = function(checkthis){
+	if( checkthis.beginanimation ){
+		this.frame = 0;
+		checkthis.beginanimation = false;
+	}
+
 	if( checkthis.animating ){
-		var alpha = app.normalize( this.frame, 0, this.animframes, 0, 1);
-		this.display.context.globalAlpha = 1 - alpha;
+		if( this.transition === "fade" ){
+			var alpha = app.normalize( this.frame, 0, this.animframes, 0, 1);
+			this.display.context.globalAlpha = 1 - alpha;
+		} else if( this.transition === "menuslide" ){
+			var max = this.display.dimx - (this.display.dimx - this.display.right);
+			var xoffset = app.normalize( 
+				this.frame, 
+				0, this.animframes, 
+				0, max
+			);
+			this.display.context.translate( xoffset, 0 );
+		}
 	}
 };
 CleanUIElem.prototype.animate_post = function(checkthis){
 	if( checkthis.animating ){
-		this.display.context.globalAlpha = 1.0;
+
+		if( this.transition === "fade" ){
+			this.display.context.globalAlpha = 1.0;
+		} else if( this.transition === "menuslide" ){
+			this.display.context.setTransform(1, 0, 0, 1, 0, 0);
+		}
+
 		this.frame++;
 		if( this.frame === this.animframes ){
 			checkthis.animating = false;

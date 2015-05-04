@@ -13,6 +13,7 @@ var CleanDialogueOverlay = app.ui.overlays.CleanDialogueOverlay =
 	this.w = this.to_x_ratio( 362 );
 	this.h = this.to_y_ratio( 270 );
 	this.color = this.NEUTRALCOLOR;
+	this.transition = "menuslide";
 
 	this.subelems = [];
 
@@ -26,16 +27,16 @@ CleanDialogueOverlay.prototype = app.extend(app.ui.CleanUIElem);
 
 CleanDialogueOverlay.prototype.draw = function(){
 	if( this.store.menustate !== "dialogue" && 
-		this.store.animating && 
+		this.store.menus.animating && 
 		this.store.prevstate === "dialogue" ){
 
-		this.animate_out_pre( this.store );
+		this.animate_out_pre( this.store.menus );
 	} else if( this.store.menustate !== "dialogue" ){
 		//gah this is stupid
 		this.subelems[0].scrolly = 0;
 		return;
 	} else {
-		this.animate_in_pre( this.store );
+		this.animate_in_pre( this.store.menus );
 	}
 
 	this.display.draw_rect_sprite( this.x, this.y, this.w, this.h, this.color );
@@ -44,7 +45,7 @@ CleanDialogueOverlay.prototype.draw = function(){
 		this.subelems[i].draw();
 	}
 
-	this.animate_post( this.store );
+	this.animate_post( this.store.menus );
 };
 
 CleanDialogueOverlay.prototype.propogate_click = function( x, y ){

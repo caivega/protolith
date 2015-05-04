@@ -15,6 +15,8 @@ var CleanInventoryOverlay = app.ui.overlays.CleanInventoryOverlay =
 	this.h = this.to_y_ratio( 270 );
 	this.color = this.NEUTRALCOLOR;
 
+	this.transition = "menuslide";
+
 	this.subelems = [];
 
 	this.subelems.push(
@@ -32,16 +34,16 @@ CleanInventoryOverlay.prototype = app.extend(app.ui.CleanUIElem);
 
 CleanInventoryOverlay.prototype.draw = function(){
 	if( this.store.menustate !== "inventory" && 
-		this.store.animating && 
+		this.store.menus.animating && 
 		this.store.prevstate === "inventory" ){
 
-		this.animate_out_pre( this.store );
+		this.animate_out_pre( this.store.menus );
 	} else if( this.store.menustate !== "inventory" ){
 		//gah this is stupid
 		this.subelems[0].scrolly = 0;
 		return;
 	} else {
-		this.animate_in_pre( this.store );
+		this.animate_in_pre( this.store.menus );
 	}
 
 	this.display.draw_rect_sprite( this.x, this.y, this.w, this.h, this.color );
@@ -50,7 +52,7 @@ CleanInventoryOverlay.prototype.draw = function(){
 		this.subelems[i].draw();
 	}
 
-	this.animate_post( this.store );
+	this.animate_post( this.store.menus );
 };
 
 CleanInventoryOverlay.prototype.propogate_click = function( x, y ){

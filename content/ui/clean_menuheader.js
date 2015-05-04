@@ -55,6 +55,9 @@ CleanMenuHeaderLabel.prototype = extend(CleanUIElem);
 
 CleanMenuHeaderLabel.prototype.draw = function(){
 	var text = this.state.uistore.menustate;
+	if( text === "none" ){
+		text = this.state.uistore.prevstate;
+	}
 	text = text[0].toUpperCase() + text.slice(1);
 	this.display.draw_text_params( text, this.x, this.y, {
 		color: this.color ,

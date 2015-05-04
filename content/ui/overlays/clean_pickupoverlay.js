@@ -16,6 +16,7 @@ var CleanPickupOverlay = app.ui.overlays.CleanPickupOverlay =
 	this.w = this.to_x_ratio( 362 );
 	this.h = this.to_y_ratio( 270 );
 	this.color = this.NEUTRALCOLOR;
+	this.transition = "menuslide";
 
 	this.subelems = [];
 
@@ -31,16 +32,16 @@ CleanPickupOverlay.prototype = extend(CleanUIElem);
 
 CleanPickupOverlay.prototype.draw = function(){
 	if( this.store.menustate !== "pickup" && 
-		this.store.animating && 
+		this.store.menus.animating && 
 		this.store.prevstate === "pickup" ){
 
-		this.animate_out_pre( this.store );
+		this.animate_out_pre( this.store.menus );
 	} else if( this.store.menustate !== "pickup" ){
 		//gah this is stupid
 		this.subelems[0].scrolly = 0;
 		return;
 	} else {
-		this.animate_in_pre( this.store );
+		this.animate_in_pre( this.store.menus );
 	}
 
 	this.display.draw_rect_sprite( this.x, this.y, this.w, this.h, this.color );
@@ -49,7 +50,7 @@ CleanPickupOverlay.prototype.draw = function(){
 		this.subelems[i].draw();
 	}
 
-	this.animate_post( this.store );
+	this.animate_post( this.store.menus);
 };
 
 CleanPickupOverlay.prototype.propogate_click = function( x, y ){
@@ -163,7 +164,7 @@ function CleanPickupItem( game, state, display, index ){
 	var yoffset = 20;
 
 	this.w = this.to_x_ratio( 362 );
-	this.h = this.to_y_ratio( 20 );
+	this.h = this.to_y_ratio( 40 );
 	this.x = this.to_x_ratio( 110 );
 	this.y = this.to_y_ratio( yoffset ) + index*( this.h + 1 );
 	this.color1 = this.LIGHTCOLOR;

@@ -45,7 +45,6 @@ var WorldState = app.game.WorldState = function( game, stateparams ){
     this.cleanuielems = [];
 
     this.uistore = {
-        animating: false, //if the menu is currently animating
         pcselected: 0, //the index of the currently selected pc on the pclist
         menustate: "none", //the current menustate
         prevstate: "none", //the previous menustate (for animation logic)
@@ -60,6 +59,9 @@ var WorldState = app.game.WorldState = function( game, stateparams ){
             y:0
         },
         menus: {
+            animating: false,
+            beginanimation: false,
+            transition: "menuslide",
             pickup:{
                 nearbyitems: []
             },
@@ -231,48 +233,47 @@ WorldState.prototype.init = function(dontstart){
 
 WorldState.prototype.begin = function(){
     this.wMode.start();
-	var captain = this;
-
     var keythrottle = 0;
-	function wsinterval(){
- 		if( captain.forceQuit ){
+	var wsinterval = function(){
+ 		if( this.forceQuit ){
             return;
         }
 
-        if( captain.fpsframe === 0 ){
-            captain.timer.time( "fps" );
+        if( this.fpsframe === 0 ){
+            this.timer.time( "fps" );
         }
 
 		window.requestAnimationFrame(wsinterval); 
 		if( keythrottle === 0 ){
 		    keythrottle = 5;
-            for( var i in captain.game.keys ){
-	           if( captain.constkeys[i] === true && captain.game.keys[i] === true){
-	           	   captain.handleKeyPress({which:i, keyCode:i});
+            for( var i in this.game.keys ){
+	           if( this.constkeys[i] === true && this.game.keys[i] === true){
+	           	   this.handleKeyPress({which:i, keyCode:i});
 	           } 
             }
     	} else { 
             keythrottle--;
     	}
 
-		captain.draw();
+		this.draw();
 
-        captain.game.display.draw_text_params("FPS " + captain.fps, 30, 30, {
+        this.game.display.draw_text_params("FPS " + this.fps, this.world.left + 5, 0, {
             color: "white",
             font: "monospace",
             size: "20",
-            align: "center",
+            align: "left",
             shadowcolor: "black"
         });
 
-        if( captain.fpsframe === 59 ){
-            var time = captain.timer.timeEnd( "fps" );
-            captain.fps = Math.round( 60 / (time/1000) );
-            captain.fpsframe = 0;
+        if( this.fpsframe === 59 ){
+            var time = this.timer.timeEnd( "fps" );
+            this.fps = Math.round( 60 / (time/1000) );
+            this.fpsframe = 0;
         } else {
-            captain.fpsframe++;
+            this.fpsframe++;
         }
-	} wsinterval();
+	}.bind(this);
+    wsinterval();
 };
 
 WorldState.prototype.draw = function(){

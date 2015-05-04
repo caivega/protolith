@@ -148,9 +148,10 @@ Character.prototype.draw = function(){
 	    	this.stats.curr_hp, 
 	        this.world.grid_to_pixw(this.x)+this.world.gridw/2, 
 	        this.world.grid_to_pixh(this.y), {
-		        font:"Verdanda",
+		        font:"Verdana",
 		        color:"white",
-		        size:"9",
+		        align:"center",
+		        size: app.ui.CleanUIElem.prototype.get_font_size.call( this, 9 ),
 		        weight:"italic"
 		    }
 	    );   
@@ -189,9 +190,9 @@ Character.prototype.has_dialogue = function(){
 };
 
 Character.prototype.set_animation_walk_offset = function(){
-	this.walk_offsetx = 25*(this.last_x - this.new_x)*
+	this.walk_offsetx = this.world.gridw*(this.last_x - this.new_x)*
 		(this.max_walk_frames-this.walk_frame)*this.walk_offset_distance;
-	this.walk_offsety = 27*(this.last_y - this.new_y)*
+	this.walk_offsety = this.world.gridh*(this.last_y - this.new_y)*
 		(this.max_walk_frames-this.walk_frame)*this.walk_offset_distance;
 };
 

@@ -25,6 +25,8 @@ var Display = app.display.Display = function(canvas_name){
     this.bxSize = 252;
     this.bySize = 288;
     this.boffset = 110;
+    this.left = this.boffset;
+    this.right = this.left + this.bxSize;
 
     this.dimx = 472;
     this.dimy = 288;
@@ -129,21 +131,34 @@ Display.prototype.load_terrain = function(num_tiles){
 
 Display.prototype.is_ready = function(){
 
-    if( this.num_sprites == this.loaded_sprites && this.num_spritesheets == this.loaded_spritesheets ){
+    if( this.num_sprites == this.loaded_sprites && 
+        this.num_spritesheets == this.loaded_spritesheets ){
         
         if( this.avg_loaded ){
-            return {is_ready:true, max: this.loaded_sprites+this.num_spritesheets, curr: this.loaded_sprites+this.loaded_spritesheets};
+            return {
+                is_ready:true, 
+                max: this.loaded_sprites+this.num_spritesheets, 
+                curr: this.loaded_sprites+this.loaded_spritesheets};
         } else {
             for( var i in this.sprites ){
                 var spr = this.sprites[i];
-                this.sprites[i].avg = this.calc_avg_rgb( this.images[spr.name], spr.x, spr.y, spr.w, spr.h );
+                this.sprites[i].avg = this.calc_avg_rgb( 
+                    this.images[spr.name], spr.x, spr.y, spr.w, spr.h 
+                    );
             }
             this.avg_loaded = true;
-            return {is_ready:true, max: this.loaded_sprites+this.num_spritesheets, curr: this.loaded_sprites+this.loaded_spritesheets};
+            return {
+                is_ready:true, 
+                max: this.loaded_sprites+this.num_spritesheets, 
+                curr: this.loaded_sprites+this.loaded_spritesheets
+            };
         }
     } else {
-        //console.log(this.num_sprites, this.loaded_sprites, this.num_spritesheets, this.loaded_spritesheets);
-        return {is_ready:false, max: this.loaded_sprites+this.num_spritesheets, curr: this.loaded_sprites+this.loaded_spritesheets};
+        return {
+            is_ready:false, 
+            max: this.loaded_sprites+this.num_spritesheets, 
+            curr: this.loaded_sprites+this.loaded_spritesheets
+        };
     }
 };
 
@@ -544,7 +559,7 @@ Display.prototype.draw_text_to_context = function( id, text, params ){
     context.textBaseline = "middle";
 
     if( params.shadowcolor ){
-        context.strokeText(text, canvas.width/2, canvas.height/2);
+        context.strokeText(text, 0, canvas.height/2);
     }
 
     context.fillText(text, 0, canvas.height/2);

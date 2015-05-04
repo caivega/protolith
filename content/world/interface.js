@@ -35,14 +35,17 @@ Interface.prototype.hide_modal = function( storemodal ){
 };
 
 Interface.prototype.show_menu = function( name ){
+    this.uistore.prevstate = this.uistore.menustate;
     this.uistore.menustate = name;
-    this.uistore.animating = true;
-    this.uistore.prevstate = name;
+    this.uistore.menus.beginanimation = true;
+    this.uistore.menus.animating = true;
 };
 
 Interface.prototype.hide_menu = function(){
+    this.uistore.prevstate = this.uistore.menustate;
     this.uistore.menustate = "none";
-    this.uistore.animating = true;
+    this.uistore.menus.beginanimation = true;
+    this.uistore.menus.animating = true;
     this.turn_all_modals_off();
 };
 

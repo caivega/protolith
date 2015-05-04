@@ -17,6 +17,7 @@ var CleanMagicOverlay = app.ui.overlays.CleanMagicOverlay =
 	this.w = this.to_x_ratio( 362 );
 	this.h = this.to_y_ratio( 270 );
 	this.color = this.NEUTRALCOLOR;
+	this.transition = "menuslide";
 
 	this.name = name;
 	this.subelems = [
@@ -32,14 +33,14 @@ CleanMagicOverlay.prototype = extend(CleanUIElem);
 
 CleanMagicOverlay.prototype.draw = function(){
 	if( this.store.menustate !== this.name && 
-		this.store.animating && 
+		this.store.menus.animating && 
 		this.store.prevstate === this.name ){
 
-		this.animate_out_pre( this.store );
+		this.animate_out_pre( this.store.menus );
 	} else if( this.store.menustate !== this.name ){
 		return;
 	} else {
-		this.animate_in_pre( this.store );
+		this.animate_in_pre( this.store.menus );
 	}
 
 	this.display.draw_rect_sprite( this.x, this.y, this.w, this.h, this.color );
@@ -48,7 +49,7 @@ CleanMagicOverlay.prototype.draw = function(){
 		this.subelems[i].draw();
 	}
 
-	this.animate_post( this.store );
+	this.animate_post( this.store.menus );
 };
 
 CleanMagicOverlay.prototype.propogate_click = function( x, y ){
@@ -141,6 +142,9 @@ CleanMagicTabsButton.prototype = extend(CleanUIElem);
 
 CleanMagicTabsButton.prototype.draw = function(){
 	var menu = this.state.uistore.menustate;
+	if( !(menu === "dark" || menu === "light") ){
+		menu = this.state.uistore.prevstate;
+	}
 	if( this.state.uistore.menus[ menu ] === undefined ){
 		return;
 	}
@@ -160,6 +164,9 @@ CleanMagicTabsButton.prototype.draw = function(){
 
 CleanMagicTabsButton.prototype.onclick = function(){
 	var menu = this.state.uistore.menustate;
+	if( !(menu === "dark" || menu === "light") ){
+		menu = this.state.uistore.prevstate;
+	}
 	this.state.uistore.menus[ menu ].tab = this.index;
 };
 
@@ -243,7 +250,10 @@ function CleanMagicSpell( game, state, display, index ){
 CleanMagicSpell.prototype = extend(CleanUIElem);
 
 CleanMagicSpell.prototype.draw = function(){
-	var menu = this.store.menustate;
+	var menu = this.state.uistore.menustate;
+	if( !(menu === "dark" || menu === "light") ){
+		menu = this.state.uistore.prevstate;
+	}
 	if( this.state.uistore.menus[ menu ] === undefined ){
 		return;
 	}
@@ -304,7 +314,10 @@ function CleanMagicSpellIcon( game, state, display, index ){
 CleanMagicSpellIcon.prototype = extend(CleanUIElem);
 
 CleanMagicSpellIcon.prototype.draw = function(){
-	var menu = this.store.menustate;
+	var menu = this.state.uistore.menustate;
+	if( !(menu === "dark" || menu === "light") ){
+		menu = this.state.uistore.prevstate;
+	}
 	if( this.state.uistore.menus[ menu ] === undefined ){
 		return;
 	}
@@ -336,7 +349,10 @@ function CleanMagicSpellLabel( game, state, display, index ){
 CleanMagicSpellLabel.prototype = extend(CleanUIElem);
 
 CleanMagicSpellLabel.prototype.draw = function(){
-	var menu = this.store.menustate;
+	var menu = this.state.uistore.menustate;
+	if( !(menu === "dark" || menu === "light") ){
+		menu = this.state.uistore.prevstate;
+	}
 	if( this.state.uistore.menus[ menu ] === undefined ){
 		return;
 	}
@@ -378,7 +394,10 @@ function CleanMagicSpellCost( game, state, display, index ){
 CleanMagicSpellCost.prototype = extend(CleanUIElem);
 
 CleanMagicSpellCost.prototype.draw = function(){
-	var menu = this.store.menustate;
+	var menu = this.state.uistore.menustate;
+	if( !(menu === "dark" || menu === "light") ){
+		menu = this.state.uistore.prevstate;
+	}
 	if( this.state.uistore.menus[ menu ] === undefined ){
 		return;
 	}
@@ -423,7 +442,10 @@ function CleanMagicSpellInfoButton( game, state, display, index ){
 CleanMagicSpellInfoButton.prototype = extend(CleanUIElem);
 
 CleanMagicSpellInfoButton.prototype.draw = function(){
-	var menu = this.store.menustate;
+	var menu = this.state.uistore.menustate;
+	if( !(menu === "dark" || menu === "light") ){
+		menu = this.state.uistore.prevstate;
+	}
 	if( this.state.uistore.menus[ menu ] === undefined ){
 		return;
 	}

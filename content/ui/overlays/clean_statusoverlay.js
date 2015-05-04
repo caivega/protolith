@@ -38,14 +38,14 @@ CleanStatusOverlay.prototype = extend(CleanUIElem);
 
 CleanStatusOverlay.prototype.draw = function(){
 	if( this.store.menustate !== "status" && 
-		this.store.animating && 
+		this.store.menus.animating && 
 		this.store.prevstate === "status" ){
 
-		this.animate_out_pre( this.store );
+		this.animate_out_pre( this.store.menus );
 	} else if( this.store.menustate !== "status" ){
 		return;
 	} else {
-		this.animate_in_pre( this.store );
+		this.animate_in_pre( this.store.menus );
 	}
 
 	this.display.draw_rect_sprite( this.x, this.y, this.w, this.h, this.color );
@@ -54,7 +54,7 @@ CleanStatusOverlay.prototype.draw = function(){
 		this.subelems[i].draw();
 	}
 
-	this.animate_post( this.store );
+	this.animate_post( this.store.menus );
 };
 
 CleanStatusOverlay.prototype.propogate_click = function(x,y){

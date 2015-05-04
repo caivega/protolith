@@ -111,7 +111,7 @@ function CleanMenuButtonInventory(game, state, display){
 	CleanMenuButton.call( this, game, state, display );
 
 	this.x = this.x_percent_to_pixel( 0.7690677966101694 );
-	this.y = this.y_percent_to_pixel( 0.22569444444444445 );
+	this.y = this.y_percent_to_pixel( 0.034722222222222224 ) + this.h + 2;
 	this.textx = this.x_percent_to_pixel( 0.7790677966101694 + this.centerxoffset );
 	this.texty = this.y_percent_to_pixel( 0.22169444444444445 + this.centeryoffset );
 	this.text = "Inventory";
@@ -122,7 +122,7 @@ function CleanMenuButtonPickup(game, state, display){
 	CleanMenuButton.call( this, game, state, display );
 
 	this.x = this.x_percent_to_pixel( 0.8834745762711864 );
-	this.y = this.y_percent_to_pixel( 0.22569444444444445 );
+	this.y = this.y_percent_to_pixel( 0.034722222222222224 ) + (this.h + 2);
 	this.textx = this.x_percent_to_pixel( 0.8934745762711864 + this.centerxoffset );
 	this.texty = this.y_percent_to_pixel( 0.22169444444444445 + this.centeryoffset );
 	this.text = "Pickup";
@@ -133,7 +133,7 @@ function CleanMenuButtonDark(game, state, display){
 	CleanMenuButton.call( this, game, state, display );
 
 	this.x = this.x_percent_to_pixel( 0.7690677966101694 );
-	this.y = this.y_percent_to_pixel( 0.4131944444444444 );
+	this.y = this.y_percent_to_pixel( 0.034722222222222224 ) + (this.h + 2)*2;
 	this.textx = this.x_percent_to_pixel( 0.7790677966101694 + this.centerxoffset );
 	this.texty = this.y_percent_to_pixel( 0.4051944444444444 + this.centeryoffset );
 	this.text = "Dark";
@@ -144,7 +144,7 @@ function CleanMenuButtonLight(game, state, display){
 	CleanMenuButton.call( this, game, state, display );
 
 	this.x = this.x_percent_to_pixel( 0.8834745762711864 );
-	this.y = this.y_percent_to_pixel( 0.4131944444444444 );
+	this.y = this.y_percent_to_pixel( 0.034722222222222224 ) + (this.h + 2)*2;
 	this.textx = this.x_percent_to_pixel( 0.8934745762711864 + this.centerxoffset );
 	this.texty = this.y_percent_to_pixel( 0.4051944444444444 + this.centeryoffset );
 	this.text = "Light";
