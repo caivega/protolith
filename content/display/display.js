@@ -47,10 +47,10 @@ var Display = app.display.Display = function(canvas_name){
     }
 
     this.OnResizeCalled = function(){
-        this.canvas.width = window.innerWidth;
-        this.canvas.height = window.innerHeight;
-        this.dimx = window.innerWidth;
-        this.dimy = window.innerHeight;
+        this.canvas.width = 800//window.innerWidth;
+        this.canvas.height = 600//window.innerHeight;
+        this.dimx = 800//window.innerWidth;
+        this.dimy = 600//window.innerHeight;
 
         for( var i in this.textimages ){
             delete this.sprites[ this.textimages[i] ];
