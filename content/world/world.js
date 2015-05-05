@@ -155,7 +155,7 @@ World.prototype.draw = function(){
     	this.animate_camera();
     }
 
-    this.draw_sightlines();
+    //this.draw_sightlines();
 
     //Dead Characters
     for( var i in this.characters ){
@@ -340,30 +340,28 @@ World.prototype.draw_sightlines = function(){
     	if( sq.is_on_screen() ){
     		sq.draw();  
     		sq.isInSight = true;
-    // 		if( !this.determine_visibility(sq.x, sq.y, ix, iy, "blocksSight") ){
-    // 			if( sq.isExplored ){
-				//     this.display.draw_sprite_scaled("tile_121", 
-				// 		                    this.grid_to_pixw(sq.x), 
-				// 		                    this.grid_to_pixh(sq.y),
-				// 		                    this.gridw,
-				// 		                    this.gridh);  
-				//     sq.isInSight = false;
-				// } else {
-				// 	this.display.draw_sprite_scaled("tile_98", 
-				// 		                    this.grid_to_pixw(sq.x), 
-				// 		                    this.grid_to_pixh(sq.y),
-				// 		                    this.gridw,
-				// 		                    this.gridh);  
-				// 	sq.isInSight = false;
-				// }
-    // 		} else {
-    // 			sq.isExplored = true;
-    // 			sq.isInSight = true;
-    // 			this.map_explored_table[sq.x][sq.y] = 1;
-    // 		}
-    	} else {
-    		sq.isInSight = false;
-    	}  
+    		if( !this.determine_visibility(sq.x, sq.y, ix, iy, "blocksSight") ){
+    			if( sq.isExplored ){
+				    this.display.draw_sprite_scaled("tile_121", 
+						                    this.grid_to_pixw(sq.x), 
+						                    this.grid_to_pixh(sq.y),
+						                    this.gridw,
+						                    this.gridh);  
+				    sq.isInSight = false;
+				} else {
+					this.display.draw_sprite_scaled("tile_98", 
+						                    this.grid_to_pixw(sq.x), 
+						                    this.grid_to_pixh(sq.y),
+						                    this.gridw,
+						                    this.gridh);  
+					sq.isInSight = false;
+				}
+    		} else {
+    			sq.isExplored = true;
+    			sq.isInSight = true;
+    			this.map_explored_table[sq.x][sq.y] = 1;
+    		}
+    	}
     }
 };
 
