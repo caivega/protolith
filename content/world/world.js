@@ -132,8 +132,6 @@ World.prototype.init = function(state){
 World.prototype.recalculate_dims = function(){
 	this.left = this.display.left = 
 		app.ui.CleanUIElem.prototype.to_x_ratio.call( this, 110 );
-	this.right = this.display.right = 
-		app.ui.CleanUIElem.prototype.x_percent_to_pixel.call( this, 0.7669491525423728 );
 	this.top = 0;
 	this.width = app.ui.CleanUIElem.prototype.to_x_ratio.call( this, 252 );
 	this.height = app.ui. CleanUIElem.prototype.to_x_ratio.call( this, 288 );

@@ -147,7 +147,7 @@ WorldState.prototype.remake_ui = function(){
         //app.ui.overlays.CleanPCListOverlay,
         app.ui.overlays.CleanMovementOverlay,
         // app.ui.overlays.CleanMenuOverlay,
-        // app.ui.overlays.CleanActionOverlay,
+        app.ui.overlays.CleanActionOverlay,
         // app.ui.overlays.CleanStatusOverlay,
         // app.ui.overlays.CleanInventoryOverlay,
         // app.ui.overlays.CleanDarkMagicOverlay,

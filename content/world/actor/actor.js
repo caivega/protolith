@@ -41,9 +41,9 @@ Actor.prototype.is_on_screen = function(){
     var y = this.world.grid_to_pixh(this.y);
     //sprites are drawn from the top left, so you have to account for objects whose
     //bounding boxes are on the screen from the top left insead of the center
-	if( x >= this.world.left - this.world.gridw && 
-		y >= this.world.top - this.world.gridh && 
-		x < this.world.right + this.world.gridw &&
+	if( x >= this.world.left - this.world.gridw + 1 && 
+		y >= this.world.top - this.world.gridh - 1 && 
+		x < this.world.right && //+ this.world.gridw &&
 		y < this.world.bottom + this.world.gridh ){
 		return true;
 	} else {
