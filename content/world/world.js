@@ -205,9 +205,11 @@ World.prototype.draw = function(){
             toremove.push( i );
         } 
         this.redraw = true;       
-    }  
+    }
+    var nspliced = 0;
     for( var i in toremove ){
-    	this.particles.splice( toremove[i], 1 );
+    	this.particles.splice( toremove[i]-nspliced, 1 );
+    	nspliced++;
     }
 
     //Projectiles
@@ -219,8 +221,10 @@ World.prototype.draw = function(){
         }
         this.redraw = true;
     }
+    var nspliced = 0;
     for( var i in toremove ){
-    	this.projectiles.splice( toremove[i], 1 );
+    	this.projectiles.splice( toremove[i]-nspliced, 1 );
+    	nspliced++;
     }
 };
 
@@ -335,28 +339,31 @@ World.prototype.draw_sightlines = function(){
     	var sq = this.tiles[i];
     	if( sq.is_on_screen() ){
     		sq.draw();  
-    		if( !this.determine_visibility(sq.x, sq.y, ix, iy, "blocksSight") ){
-    			if( sq.isExplored ){
-				    this.display.draw_sprite_scaled("tile_121", 
-						                    this.grid_to_pixw(sq.x), 
-						                    this.grid_to_pixh(sq.y),
-						                    this.gridw,
-						                    this.gridh);  
-				    sq.isInSight = false;
-				} else {
-					this.display.draw_sprite_scaled("tile_98", 
-						                    this.grid_to_pixw(sq.x), 
-						                    this.grid_to_pixh(sq.y),
-						                    this.gridw,
-						                    this.gridh);  
-					sq.isInSight = false;
-				}
-    		} else {
-    			sq.isExplored = true;
-    			sq.isInSight = true;
-    			this.map_explored_table[sq.x][sq.y] = 1;
-    		}
-    	}    
+    		sq.isInSight = true;
+    // 		if( !this.determine_visibility(sq.x, sq.y, ix, iy, "blocksSight") ){
+    // 			if( sq.isExplored ){
+				//     this.display.draw_sprite_scaled("tile_121", 
+				// 		                    this.grid_to_pixw(sq.x), 
+				// 		                    this.grid_to_pixh(sq.y),
+				// 		                    this.gridw,
+				// 		                    this.gridh);  
+				//     sq.isInSight = false;
+				// } else {
+				// 	this.display.draw_sprite_scaled("tile_98", 
+				// 		                    this.grid_to_pixw(sq.x), 
+				// 		                    this.grid_to_pixh(sq.y),
+				// 		                    this.gridw,
+				// 		                    this.gridh);  
+				// 	sq.isInSight = false;
+				// }
+    // 		} else {
+    // 			sq.isExplored = true;
+    // 			sq.isInSight = true;
+    // 			this.map_explored_table[sq.x][sq.y] = 1;
+    // 		}
+    	} else {
+    		sq.isInSight = false;
+    	}  
     }
 };
 
