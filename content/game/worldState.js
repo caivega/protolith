@@ -144,16 +144,16 @@ WorldState.prototype.remake_ui = function(){
     this.cleanuielems = [];
 
     var list = [
-        app.ui.overlays.CleanPCListOverlay,
+        //app.ui.overlays.CleanPCListOverlay,
         app.ui.overlays.CleanMovementOverlay,
-        app.ui.overlays.CleanMenuOverlay,
-        app.ui.overlays.CleanActionOverlay,
-        app.ui.overlays.CleanStatusOverlay,
-        app.ui.overlays.CleanInventoryOverlay,
-        app.ui.overlays.CleanDarkMagicOverlay,
-        app.ui.overlays.CleanLightMagicOverlay,
-        app.ui.overlays.CleanPickupOverlay,
-        app.ui.overlays.CleanDialogueOverlay,
+        // app.ui.overlays.CleanMenuOverlay,
+        // app.ui.overlays.CleanActionOverlay,
+        // app.ui.overlays.CleanStatusOverlay,
+        // app.ui.overlays.CleanInventoryOverlay,
+        // app.ui.overlays.CleanDarkMagicOverlay,
+        // app.ui.overlays.CleanLightMagicOverlay,
+        // app.ui.overlays.CleanPickupOverlay,
+        // app.ui.overlays.CleanDialogueOverlay,
         app.ui.CleanNotification,
         app.ui.CleanSelector
     ];
@@ -279,9 +279,9 @@ WorldState.prototype.begin = function(){
 WorldState.prototype.draw = function(){
     this.update();
 
-    // if( this.uistore.menustate === "none" ){
-    //     this.world.draw( this.wMode );
-    // }
+    if( this.uistore.menustate === "none" ){
+        this.world.draw( this.wMode );
+    }
 
     for( var i in this.cleanuielems ){
         this.cleanuielems[i].draw();
