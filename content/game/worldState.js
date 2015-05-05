@@ -279,9 +279,9 @@ WorldState.prototype.begin = function(){
 WorldState.prototype.draw = function(){
     this.update();
 
-    if( this.uistore.menustate === "none" ){
-        this.world.draw( this.wMode );
-    }
+    // if( this.uistore.menustate === "none" ){
+    //     this.world.draw( this.wMode );
+    // }
 
     for( var i in this.cleanuielems ){
         this.cleanuielems[i].draw();
