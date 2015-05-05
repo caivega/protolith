@@ -47,10 +47,12 @@ var Display = app.display.Display = function(canvas_name){
     }
 
     this.OnResizeCalled = function(){
-        this.canvas.width = 800//window.innerWidth;
-        this.canvas.height = 600//window.innerHeight;
-        this.dimx = 800//window.innerWidth;
-        this.dimy = 600//window.innerHeight;
+        this.canvas.width = 944;//window.innerWidth;
+        this.canvas.height = 576;//window.innerHeight;
+        this.dimx = 944;//window.innerWidth;
+        this.dimy = 574;//window.innerHeight;
+        this.canvas.style.width = "100%";
+        this.canvas.style.height = "100%";
 
         for( var i in this.textimages ){
             delete this.sprites[ this.textimages[i] ];

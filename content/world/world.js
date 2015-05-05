@@ -155,7 +155,7 @@ World.prototype.draw = function(){
     	this.animate_camera();
     }
 
-    //this.draw_sightlines();
+    this.draw_sightlines();
 
     //Dead Characters
     for( var i in this.characters ){

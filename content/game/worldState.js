@@ -145,7 +145,7 @@ WorldState.prototype.remake_ui = function(){
 
     var list = [
         // app.ui.overlays.CleanPCListOverlay,
-        // app.ui.overlays.CleanMovementOverlay,
+        app.ui.overlays.CleanMovementOverlay,
         // app.ui.overlays.CleanMenuOverlay,
         // app.ui.overlays.CleanActionOverlay,
         // app.ui.overlays.CleanStatusOverlay,
@@ -154,8 +154,8 @@ WorldState.prototype.remake_ui = function(){
         // app.ui.overlays.CleanLightMagicOverlay,
         // app.ui.overlays.CleanPickupOverlay,
         // app.ui.overlays.CleanDialogueOverlay,
-        // app.ui.CleanNotification,
-        // app.ui.CleanSelector
+        app.ui.CleanNotification,
+        app.ui.CleanSelector
     ];
 
     for( var i in list ){
@@ -306,15 +306,15 @@ WorldState.prototype.draw = function(){
 	}
 
 
-    // this.update();
+    this.update();
 
-    // if( this.uistore.menustate === "none" ){
-    //     this.world.draw( this.wMode );
-    // }
+    if( this.uistore.menustate === "none" ){
+        this.world.draw( this.wMode );
+    }
 
-    // for( var i in this.cleanuielems ){
-    //     this.cleanuielems[i].draw();
-    // }
+    for( var i in this.cleanuielems ){
+        this.cleanuielems[i].draw();
+    }
 };
 
 WorldState.prototype.update = function(){
