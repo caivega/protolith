@@ -170,6 +170,10 @@ Display.prototype.clear = function(color){
     this.context.fill();        
 };
 
+Display.prototype.clear_screen = function(){
+    this.context.clearRect(0, 0, this.dimx, this.dimy);
+};
+
 Display.prototype.clear_area = function(x, y, w, h){
     this.context.clearRect(x, y, w, h);
 };

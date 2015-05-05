@@ -144,18 +144,18 @@ WorldState.prototype.remake_ui = function(){
     this.cleanuielems = [];
 
     var list = [
-        //app.ui.overlays.CleanPCListOverlay,
-        app.ui.overlays.CleanMovementOverlay,
+        // app.ui.overlays.CleanPCListOverlay,
+        // app.ui.overlays.CleanMovementOverlay,
         // app.ui.overlays.CleanMenuOverlay,
-        app.ui.overlays.CleanActionOverlay,
+        // app.ui.overlays.CleanActionOverlay,
         // app.ui.overlays.CleanStatusOverlay,
         // app.ui.overlays.CleanInventoryOverlay,
         // app.ui.overlays.CleanDarkMagicOverlay,
         // app.ui.overlays.CleanLightMagicOverlay,
         // app.ui.overlays.CleanPickupOverlay,
         // app.ui.overlays.CleanDialogueOverlay,
-        app.ui.CleanNotification,
-        app.ui.CleanSelector
+        // app.ui.CleanNotification,
+        // app.ui.CleanSelector
     ];
 
     for( var i in list ){
@@ -276,16 +276,45 @@ WorldState.prototype.begin = function(){
     wsinterval();
 };
 
+
+var x = 0;
+var y = 0;
+var vx = 5;
+var vy = 5;
 WorldState.prototype.draw = function(){
-    this.update();
+	var w = 200;
+	var h = 200;
+	var c = "green";
 
-    if( this.uistore.menustate === "none" ){
-        this.world.draw( this.wMode );
-    }
+	this.game.display.clear_screen();
+	this.game.display.draw_rect_params( {
+		x: x,
+		y: y,
+		width: w,
+		height: h,
+		color: c
+	});
 
-    for( var i in this.cleanuielems ){
-        this.cleanuielems[i].draw();
-    }
+	x += vx;
+	y += vy;
+
+	if( x > this.game.display.dimx || x < 0 ){
+		vx = -vx;
+	}
+	if( y > this.game.display.dimy || y < 0 ){
+		vy = -vy;
+	}
+
+
+    // this.update();
+
+    // if( this.uistore.menustate === "none" ){
+    //     this.world.draw( this.wMode );
+    // }
+
+    // for( var i in this.cleanuielems ){
+    //     this.cleanuielems[i].draw();
+    // }
 };
 
 WorldState.prototype.update = function(){
