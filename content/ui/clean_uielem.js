@@ -92,7 +92,7 @@ CleanUIElem.prototype.animate_in_pre = function(checkthis){
 			var alpha = app.normalize( this.frame, 0, this.animframes, 0, 1);
 			this.display.context.globalAlpha = alpha;
 		} else if( this.transition === "menuslide" ){
-			var max = this.display.dimx - (this.display.dimx - this.display.right);
+			var max = (this.state.world.width + this.display.right);
 			var xoffset = max - app.normalize( 
 				this.frame, 
 				0, this.animframes, 
@@ -114,7 +114,7 @@ CleanUIElem.prototype.animate_out_pre = function(checkthis){
 			var alpha = app.normalize( this.frame, 0, this.animframes, 0, 1);
 			this.display.context.globalAlpha = 1 - alpha;
 		} else if( this.transition === "menuslide" ){
-			var max = this.display.dimx - (this.display.dimx - this.display.right);
+			var max = (this.state.world.width + this.display.right);
 			var xoffset = app.normalize( 
 				this.frame, 
 				0, this.animframes, 

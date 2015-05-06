@@ -31,6 +31,14 @@ var Display = app.display.Display = function(canvas_name){
     this.dimx = 472;
     this.dimy = 288;
 
+    this.currentresolution = "high";
+    this.resolutions = {
+        low: {w:472,h:288},
+        med: {w:708,h:432},
+        high: {w:944,h:576},
+        max: {w:window.innerWidth, h:window.innerHeight}
+    };
+
     this.id = canvas_name;
     this.canvas = document.createElement("canvas");
     this.canvas.width = this.dimx;
@@ -47,10 +55,12 @@ var Display = app.display.Display = function(canvas_name){
     }
 
     this.OnResizeCalled = function(){
-        this.canvas.width = 944;//window.innerWidth;
-        this.canvas.height = 576;//window.innerHeight;
-        this.dimx = 944;//window.innerWidth;
-        this.dimy = 574;//window.innerHeight;
+        this.resolutions.max.h = window.innerHeight;
+        this.resolutions.max.w = window.innerWidth;
+        this.canvas.width = this.resolutions[ this.currentresolution ].w;
+        this.canvas.height = this.resolutions[ this.currentresolution ].h;
+        this.dimx = this.resolutions[ this.currentresolution ].w;
+        this.dimy = this.resolutions[ this.currentresolution ].h;
         this.canvas.style.width = "100%";
         this.canvas.style.height = "100%";
 
@@ -96,6 +106,11 @@ var Display = app.display.Display = function(canvas_name){
     ];
 
     this.init();
+};
+
+Display.prototype.set_resolution = function(res){
+    this.currentresolution = res;
+    this.OnResizeCalled();
 };
 
 Display.prototype.resize_canvas = function(x, y){

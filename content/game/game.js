@@ -6,23 +6,50 @@
 
 app.game = {};
 
+var rotation = 0;
+var _draw_rotating_box = function( game ){
+    var bgx = 0;
+    var bgy = 0;
+    var bgw = app.ui.CleanUIElem.prototype.to_x_ratio.call( game, 472 );
+    var bgh = app.ui.CleanUIElem.prototype.to_y_ratio.call( game, 288 );
+    var sqw = bgw / 10;
+    var sqh = bgh / 10;
+    var sqx = bgw / 2 - sqw / 2;
+    var sqy = bgh / 3 - sqh / 2;
+    var theta = rotation * Math.PI/180;
+    game.display.context.translate( sqx, sqy );
+    game.display.context.translate( sqw / 2, sqh / 2 );
+    game.display.context.rotate( theta );
+    game.display.context.translate( -sqw / 2, -sqh / 2 );
+    game.display.draw_rect_params({
+        x:0,
+        y:0,
+        width: sqw,
+        height: sqh,
+        color: "green"
+    });
+    rotation = (rotation + 3)%360;
+    game.display.context.setTransform(1, 0, 0, 1, 0, 0);
+};
+
 var draw_loading = app.game.draw_loading = function(game, ratio){
     var context = {display:game.display};
+
     var bgx = 0;
     var bgy = 0;
     var bgw = app.ui.CleanUIElem.prototype.to_x_ratio.call( context, 472 );
     var bgh = app.ui.CleanUIElem.prototype.to_y_ratio.call( context, 288 );
 
     var textx = app.ui.CleanUIElem.prototype.to_x_ratio.call( context, 472/2 );
-    var texty = app.ui.CleanUIElem.prototype.to_y_ratio.call( context, 288/3 );
+    var texty = app.ui.CleanUIElem.prototype.to_y_ratio.call( context, 288 - 288/3 );
 
     var lbgx = app.ui.CleanUIElem.prototype.to_x_ratio.call( context, 10 );
-    var lbgy = app.ui.CleanUIElem.prototype.to_y_ratio.call( context, 130 );
-    var lbgw = app.ui.CleanUIElem.prototype.to_x_ratio.call( context, 472-20 );
+    var lbgy = app.ui.CleanUIElem.prototype.to_y_ratio.call( context, 230 );
+    var lbgw = app.ui.CleanUIElem.prototype.to_x_ratio.call( context, 472 - 20 );
     var lbgh = app.ui.CleanUIElem.prototype.to_y_ratio.call( context, 40 );
 
     var lx = app.ui.CleanUIElem.prototype.to_x_ratio.call( context, 15 );
-    var ly = app.ui.CleanUIElem.prototype.to_y_ratio.call( context, 140 );
+    var ly = app.ui.CleanUIElem.prototype.to_y_ratio.call( context, 240 );
     var lw = app.ui.CleanUIElem.prototype.to_x_ratio.call( context, ratio );
     var lh = app.ui.CleanUIElem.prototype.to_y_ratio.call( context, 40 - 20 );
     game.display.draw(bgx, bgy, bgw, bgh, "black");
@@ -34,6 +61,8 @@ var draw_loading = app.game.draw_loading = function(game, ratio){
     });
     game.display.draw(lbgx, lbgy, lbgw, lbgh, "white");
     game.display.draw(lx, ly, lw, lh, "grey");
+
+    _draw_rotating_box(game);
 };
 
 function load_game(game) { 
@@ -128,11 +157,10 @@ Game.prototype.initEventHandlers = function(){
         this.handleKeyDown(ev);
 
         if( ev.keyCode === 82 && ev.ctrlKey || ev.keyCode === 116){
-        	console.log("CTRL R PRESSED");
             return;
         }        
 
-        if( ev.which !== 187 && ev.which !== 189 && ev.which !== 17 ){
+        if( ev.which !== 187 && ev.which !== 189 && ev.which !== 17 && ev.which !== 123 ){
             ev.preventDefault();
         }
     }.bind(this);
@@ -141,34 +169,44 @@ Game.prototype.initEventHandlers = function(){
         this.handleKeyUp(ev);
     }.bind(this);
 
-    this.display.canvas.onmousemove = function(ev){  
-        this.handleMouseMove(ev);
+    var _get_normalized_event = function(ev){
+        var x = ev.clientX;
+        var y = ev.clientY;
+        var truex = app.normalize( x, 0, window.innerWidth, 0, this.display.dimx );
+        var truey = app.normalize( y, 0, window.innerHeight, 0, this.display.dimy );
+        return {
+            clientX: truex,
+            clientY: truey,
+        };
+    }.bind(this);
+
+    this.display.canvas.onmousemove = function(ev){
+        this.handleMouseMove( _get_normalized_event( ev ) );
         return false;
     }.bind(this);
 
     this.display.canvas.onmousedown = function(ev){
         this.mouseDown = true;
-        this.handleMouseClick( ev );   
-
+        this.handleMouseClick( _get_normalized_event( ev ) );   
         return false;
     }.bind(this);    
 
     this.display.canvas.onmouseup = function(ev){
         this.mouseDown = false;
-        this.handleMouseUnclick(ev);
+        this.handleMouseUnclick( _get_normalized_event( ev ) );
         return false;
     }.bind(this); 
 
     document.addEventListener('touchstart', function(e) {
         var touch = e.touches[0];
         var ev = {clientX:touch.pageX, clientY:touch.pageY};
-        this.handleMouseClick(ev);        
+        this.handleMouseClick(_get_normalized_event( ev ));        
     }.bind(this), false); 
 
-    document.addEventListener('touchstart', function(e) {
+    document.addEventListener('touchmove', function(e) {
         var touch = e.touches[0];
         var ev = {clientX:touch.pageX, clientY:touch.pageY};
-        this.handleMouseMove(ev);        
+        this.handleMouseMove(_get_normalized_event( ev ));        
     }.bind(this), false); 
 
     document.addEventListener('touchend', function() {
