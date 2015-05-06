@@ -37,7 +37,7 @@ Player.prototype.create_pc = function( pc ){
             continue;
         }
         if( itemname.search("_") == -1 ){
-            itemname = itemname + "_" + this.state.random_id(10);
+            itemname = itemname + "_" + app.random_id(10);
             pc.inventory[i] = itemname;
         }
         ch.add_item( itemname );

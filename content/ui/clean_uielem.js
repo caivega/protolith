@@ -21,7 +21,7 @@ var CleanUIElem = app.ui.CleanUIElem = function(game,state,display){
 
     this.transition = "fade";
     this.frame = 0;
-    this.animframes = 20;
+    this.animframes = this.display.get_normalized_frames( 20 );
 };
 
 CleanUIElem.prototype.light = [

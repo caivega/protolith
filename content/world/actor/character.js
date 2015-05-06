@@ -44,7 +44,7 @@ app.world.actor.Character = function(x, y, sprite, name, display, world, ai, sta
 	this.is_animated = this.display.is_sprite_animated(this.sprite);
 	this.frame = 0;
 	this.maxframe = 0;
-	this.frameskip = 4;	//val + 2 frames per cycle
+	this.frameskip = this.display.get_normalized_frames(4);	//val + 2 frames per cycle
 	this.aframes = 0;
 	this.loopmode = "last";
 	this.holdframe = false;
@@ -53,7 +53,7 @@ app.world.actor.Character = function(x, y, sprite, name, display, world, ai, sta
 	this.is_between_tiles = false;
 	this.walk_offsetx = 0;
 	this.walk_offsety = 0;
-	this.max_walk_frames = 16;	//actually does + 1 walking frames
+	this.max_walk_frames = this.display.get_normalized_frames(16);//+ 1 walking frames
 	this.walk_frame = 0;
 	this.walk_offset_distance = 1/this.max_walk_frames;
 	this.last_x = 0; this.new_x = 0;
@@ -91,6 +91,12 @@ app.world.actor.Character = function(x, y, sprite, name, display, world, ai, sta
 };
 
 Character.prototype = new app.extend(app.world.actor.Actor);
+
+Character.prototype.reset_frames = function(){
+	this.max_walk_frames = this.display.get_normalized_frames(16);
+	this.frameskip = this.display.get_normalized_frames(4);
+	this.walk_offset_distance = 1/this.max_walk_frames;
+};
 
 Character.prototype.get_sprite = function(dir, frame){
 	if( dir ){
@@ -208,10 +214,10 @@ Character.prototype.set_attack_sprite = function(){
 		this.maxframe = 2;
 		this.loopmode = "last";
 		this.reset_anim_state();
-		this.animDelay = 30; 
+		this.animDelay = this.display.get_normalized_frames(30); 
 	} else {
 	    this.mode = "a"; 
-	    this.animDelay = 15;  
+	    this.animDelay = this.display.get_normalized_frames(15);  
 	}
 };
 

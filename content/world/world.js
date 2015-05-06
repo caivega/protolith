@@ -54,7 +54,7 @@ var World = app.world.World = function(display, params){
     this.newCamY = 0;
     this.oldCamX = 0;
     this.oldCamY = 0;
-    this.max_cam_move_frames = 14;
+    this.max_cam_move_frames = this.display.get_normalized_frames(14);
     this.cam_move_frame = 0;
 
     this.facing_dir = "n";
@@ -139,6 +139,10 @@ World.prototype.recalculate_dims = function(){
 	this.right = this.left + this.width;
 	this.gridw = app.ui.CleanUIElem.prototype.to_x_ratio.call( this, 28 );
 	this.gridh = app.ui.CleanUIElem.prototype.to_y_ratio.call( this, 32 );
+	this.max_cam_move_frames = this.display.get_normalized_frames(14);
+	for( var i in this.characters ){
+		this.characters[i].reset_frames();
+	}
 };
 
 World.prototype.fix_actor_name = function(name){

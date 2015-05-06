@@ -31,6 +31,9 @@ var Display = app.display.Display = function(canvas_name){
     this.dimx = 472;
     this.dimy = 288;
 
+    this.thread = new app.display.Thread( this );
+
+    this.fps = 30;
     this.currentresolution = "high";
     this.resolutions = {
         low: {w:472,h:288},
@@ -113,6 +116,17 @@ Display.prototype.set_resolution = function(res){
     this.OnResizeCalled();
 };
 
+Display.prototype.set_framespeed = function(fps){
+    this.fps = fps;
+    this.thread.stop_interval();
+    this.OnResizeCalled();
+    this.thread.begin_interval(this.thread.func);
+};
+
+Display.prototype.get_normalized_frames = function(n){
+    return Math.ceil(n/(60/this.fps));
+};
+
 Display.prototype.resize_canvas = function(x, y){
     this.canvas.width = x;
     this.canvas.height = y;
@@ -130,24 +144,7 @@ Display.prototype.get_dims = function(){
     return {canv_wid:canv_wid, canv_hgt:canv_hgt, css_wid:css_wid, css_hgt:css_hgt};
 };
 
-Display.prototype.load_terrain = function(num_tiles){
-    var x = 0;
-    var y = 0;
-
-    for( var i = 0; i < num_tiles; i++){
-        this.load_sprite_from_spritesheet("tile_"+(i+1), "terrain1", x, y, 28, 32);
-        x++;
-        if( x == 11 ){
-            x = 0;
-            y++;
-        }
-    }
-
-    this.load_sprite_from_spritesheet("tile_"+(i+1), "terrain1", x, y, 28, 32);
-};
-
 Display.prototype.is_ready = function(){
-
     if( this.num_sprites == this.loaded_sprites && 
         this.num_spritesheets == this.loaded_spritesheets ){
         
@@ -264,6 +261,22 @@ Display.prototype.draw_line = function(x1, y1, x2, y2, wid, color){
     this.context.moveTo((x1),(y1));
     this.context.lineTo((x2),(y2)); 
     this.context.stroke();       
+};
+
+Display.prototype.load_terrain = function(num_tiles){
+    var x = 0;
+    var y = 0;
+
+    for( var i = 0; i < num_tiles; i++){
+        this.load_sprite_from_spritesheet("tile_"+(i+1), "terrain1", x, y, 28, 32);
+        x++;
+        if( x == 11 ){
+            x = 0;
+            y++;
+        }
+    }
+
+    this.load_sprite_from_spritesheet("tile_"+(i+1), "terrain1", x, y, 28, 32);
 };
 
 Display.prototype.load_picture = function(name, url, w, h){

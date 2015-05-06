@@ -15,9 +15,6 @@ var WorldState = app.game.WorldState = function( game, stateparams ){
     this.intervalid = -1;
 
     this.player = new app.world.Player( this );
-    this.timer = new app.game.Timer();
-    this.fpsframe = 0;
-    this.fps = 0;
 
     this.load_state_from_params(stateparams);
 
@@ -225,9 +222,6 @@ WorldState.prototype.init = function(dontstart){
 	    this.begin();
     }
 
-    //Must be created AFTER the ui
-    //this.Shortcut = new WorldStateShortcut(this);
-
     this.game.soundCache.stop_all();
     this.game.soundCache.loop_sound("ambient1");
 };
@@ -235,16 +229,12 @@ WorldState.prototype.init = function(dontstart){
 WorldState.prototype.begin = function(){
     this.wMode.start();
     var keythrottle = 0;
-	var wsinterval = function(){
+	var wsinterval = function worldstatedraw(){
  		if( this.forceQuit ){
+            this.game.display.thread.stop_interval();
             return;
         }
 
-        if( this.fpsframe === 0 ){
-            this.timer.time( "fps" );
-        }
-
-		window.requestAnimationFrame(wsinterval); 
 		if( keythrottle === 0 ){
 		    keythrottle = 5;
             for( var i in this.game.keys ){
@@ -257,30 +247,11 @@ WorldState.prototype.begin = function(){
     	}
 
 		this.draw();
-
-        this.game.display.draw_text_params("FPS " + this.fps, this.world.left + 5, 0, {
-            color: "white",
-            font: "monospace",
-            size: "20",
-            align: "left",
-            shadowcolor: "black"
-        });
-
-        if( this.fpsframe === 59 ){
-            var time = this.timer.timeEnd( "fps" );
-            this.fps = Math.round( 60 / (time/1000) );
-            this.fpsframe = 0;
-        } else {
-            this.fpsframe++;
-        }
 	}.bind(this);
-    wsinterval();
+    this.game.display.thread.begin_interval( wsinterval );
 };
 
 WorldState.prototype.draw = function(){
-	var w = 200;
-	var h = 200;
-	var c = "green";
     this.update();
     if( this.uistore.menustate === "none" ){
         this.world.draw( this.wMode );
@@ -293,15 +264,6 @@ WorldState.prototype.draw = function(){
 WorldState.prototype.update = function(){
     this.inter.handle_action();
     this.wMode.handle_control( this.uistore.control );
-};
-
-WorldState.prototype.random_id = function(len){
-    var text = "";
-    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghigklmnopqrstufwxyz1234567890";
-    for( var i = 0; i < len; i++){
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
-    }
-    return text;
 };
 
 WorldState.prototype.change_map = function(map_name, loc_x, loc_y){

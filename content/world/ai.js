@@ -57,7 +57,7 @@ ai.prototype.town_action = function(act, town_instance){
 		if( !act.isAgitated ){
 			act.isAgitated = true;
             //town_instance.state.warn.add_log("red", "An enemy has spotted you!");
-            console.log("You have been spotted by", act.name);
+            //console.log("You have been spotted by", act.name);
 			town_instance.do_action('wait', true );
 			return;
 		}
