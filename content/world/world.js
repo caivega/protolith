@@ -88,7 +88,6 @@ World.prototype.init = function(state){
 	//lists of actors
 	this.characters = [];
 	this.tiles = [];
-	this.overlays = [];
 	this.projectiles = [];
 	this.splashes = [];
 	this.particles = [];
@@ -195,40 +194,22 @@ World.prototype.draw = function(){
     	pcs[i].draw();
     }
 
-    //Overlays
-    for( var i in this.overlays ){
-        this.overlays[i].draw();
-    }   
-
     //Particles
-    var toremove = [];
     for( var i = 0; i < this.particles.length; i++ ){
-    	this.particles[i].act();
         this.particles[i].draw();
-        if( this.particles[i].FLAG_remove ){
-            toremove.push( i );
-        } 
-        this.redraw = true;       
-    }
-    var nspliced = 0;
-    for( var i in toremove ){
-    	this.particles.splice( toremove[i]-nspliced, 1 );
-    	nspliced++;
+        if( this.particles[i].removeme ){
+            this.particles.splice(i,1);
+            i--;
+        }      
     }
 
     //Projectiles
-    var toremove = [];
     for( var i = 0; i < this.projectiles.length; i++ ){
         this.projectiles[i].draw();
-        if( this.projectiles[i].FLAG_remove ){
-            toremove.push( i );
-        }
-        this.redraw = true;
-    }
-    var nspliced = 0;
-    for( var i in toremove ){
-    	this.projectiles.splice( toremove[i]-nspliced, 1 );
-    	nspliced++;
+        if( this.projectiles[i].removeme ){
+            this.projectiles[i].splice(i,1);
+            i--;
+        }  
     }
 };
 
@@ -386,10 +367,8 @@ World.prototype.add_projectile = function(proj){
 	return this.projectiles.length - 1;
 };
 
-World.prototype.add_particle_system = function(x, y, spr, name, params){
-	this.particles.push( 
-		new app.display.ParticleSystem(x, y, spr, name, this.display, this, params) 
-	);
+World.prototype.add_particle = function(p){
+	this.particles.push( p );
 };
 
 World.prototype.get_character_ind = function(name){

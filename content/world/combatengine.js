@@ -28,7 +28,7 @@ CombatEngine.prototype.calculate_phys_damage =
     if( sub < 1 ){
         sub = 1;
     }
-    var mitigated = Math.floor( total_raw_damage*( app.normalize( sub, 1, 120, 0, 1) ) );
+    var mitigated = Math.floor( total_raw_damage*( app.normalize( sub, 1, 120, 0, 1 ) ) );
     var final_damage = total_raw_damage - mitigated;
 
     if( final_damage < 0){
@@ -38,13 +38,10 @@ CombatEngine.prototype.calculate_phys_damage =
     return final_damage;
 };
 
-CombatEngine.prototype.show_particle = function( particleargs ){
-    var captain = this;
+CombatEngine.prototype.show_particle = function( p ){
     this.wmode.actionlist.push( function(){
-        for( var i in particleargs ){
-            captain.world.add_particle_system.apply( captain.world, particleargs[i] );  
-        }
-    });
+        this.world.add_particle( p );
+    }.bind(this));
 };
 
 CombatEngine.prototype.action_attack = function(attacker, victim){
@@ -104,19 +101,6 @@ CombatEngine.prototype.action_attack = function(attacker, victim){
         final_damage = final_damage/4;
     }
 
-    var psparams = new app.display.ParticleSystemParams( vic.x, vic.y );
-    psparams.variance = 0;
-    psparams.ubiquity = 1;
-    psparams.damage = final_damage;
-    var captain = this;
-    psparams.xpos_func = function(){ return vic.x; };
-    psparams.ypos_func = function(){ return vic.y; };
-    psparams.xvel_func = function(){ return 0; };
-    psparams.yvel_func = function(){ return 0; };
-    psparams.lifetime  = function(){ 
-        return Math.round(captain.state.player.settings.playspeed*0.1); 
-    };
-    psparams.isAnimated = false;
     att.set_attack_sprite();
     if( rhweapon.type == "ranged" ){
         if( final_damage > 0 ){
@@ -124,7 +108,13 @@ CombatEngine.prototype.action_attack = function(attacker, victim){
         } else {
             this.world.soundCache.play_sound("miss");
         }
-    	this.show_particle( [[vic.x, vic.y, "ranged", "splash", psparams]] );  
+        var p = new app.world.actor.DamageIndicator( this.world, {
+            target: vic,
+            value: final_damage,
+            sprite: "ranged",
+            isstatic: true
+        });
+    	this.show_particle( p );  
     } else {
         var punch = Math.floor( Math.random()*4 ) + 1;
         if( final_damage > 0 ){
@@ -133,12 +123,13 @@ CombatEngine.prototype.action_attack = function(attacker, victim){
             this.world.soundCache.play_sound("miss");
         }
 
-        if( att.is_animated ){
-            this.show_particle( [[vic.x, vic.y, "physd", "splash", psparams]] );  
-        } else {
-            captain.world.add_particle_system.apply( captain.world, 
-                [vic.x, vic.y, "physd", "splash", psparams] );  
-        }
+        var p = new app.world.actor.DamageIndicator( this.world, {
+            target: vic,
+            value: final_damage,
+            sprite: "physd",
+            isstatic: true
+        });
+        this.show_particle( p ); 
     }  
 
     vic.lastdamagedby = att;

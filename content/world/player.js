@@ -304,7 +304,7 @@ Player.prototype.grant_xp = function( pc, xpamt ){
     xpamt = Math.round(xpamt);
     pc.xp += xpamt;
 
-    this.state.world.add_text_particle( pc.x, pc.y, "+"+xpamt+" xp");
+    //this.state.world.add_text_particle( pc.x, pc.y, "+"+xpamt+" xp");
 
     if( pc.xp >= pc.xptonextlevel ){
         this.perform_levelup( pc );

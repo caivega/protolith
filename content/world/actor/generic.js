@@ -4,6 +4,59 @@
 (function(){
 "use strict";
 
+var DamageIndicator = app.world.actor.DamageIndicator = 
+    function(world, params){
+
+    this.world = world;
+    this.display = this.world.display;
+    if( params.target ){
+        this.target = params.target;
+        this.x = this.world.grid_to_pixw( params.target.x );
+        this.y = this.world.grid_to_pixh( params.target.y );
+    } else {
+        this.x = params.x;
+        this.y = params.y;
+    }
+    this.isstatic = params.isstatic;
+    this.sprite = [params.sprite];
+    this.value = params.value;
+
+    this.animation = new app.display.Animation( 
+        this.display.get_anim_definition( 
+            (this.isstatic?"Static":"Animated")+"DamageIndication" 
+        )
+    );
+
+    this.frame = 0;
+    this.numframes = this.animation.definition.numframes;
+    this.removeme = false;
+};
+
+DamageIndicator.prototype.draw = function(){
+    if( this.target ){
+        this.x = this.world.grid_to_pixw( this.target.x );
+        this.y = this.world.grid_to_pixh( this.target.y );
+    }
+
+    this.animation.draw_spritelist( this.sprite, this.x, this.y );
+    this.display.draw_text_params(
+        this.value, 
+        this.x+this.world.gridw/2.5, 
+        this.y+this.world.gridh/2, {
+            font:"Verdana",
+            color:"white",
+            align:"center",
+            shadowcolor:"black",
+            size: app.ui.CleanUIElem.prototype.get_font_size.call( this, 12 )
+        }
+    );
+
+    this.frame++;
+    if( this.frame >= this.numframes ){
+        this.removeme = true;
+    }
+};
+
 var CombatIndicatorBox = app.world.actor.CombatIndicatorBox = 
     function(x, y, spr, name, display, world ){
 	app.world.actor.Actor.call(this, x, y, spr, name, display, world);

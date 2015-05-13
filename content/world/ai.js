@@ -9,6 +9,19 @@ var ai = app.world.AI = function(world){
 	this.world = world;
 };
 
+ai.prototype.COMBATBEHAVIORS = [
+	"attack_nearest",
+	"attack_archer",
+	"attack_darkmagic_simple",
+	"attack_lightmagic_simple",
+	"none",
+];
+
+ai.prototype.TOWNBEHAVIORS = [
+	"rand",
+	"none",
+];
+
 ai.prototype.is_enemy_in_sight = function(me_name){
 	var me = this.world.get_character(me_name);
 	if( me == "none!" ){

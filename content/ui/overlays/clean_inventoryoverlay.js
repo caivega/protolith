@@ -215,10 +215,13 @@ CleanInventoryItem.prototype.draw = function(scrolly){
 
 	this.sprite.draw( scrolly );
 	this.label.draw( scrolly );
-	this.equip.draw( scrolly );
-	this.give.draw( scrolly );
-	this.drop.draw( scrolly );
-	this.use.draw( scrolly );
+
+	if( this.state.uistore.currentitemname === itemname ){
+		this.equip.draw( scrolly );
+		this.give.draw( scrolly );
+		this.drop.draw( scrolly );
+		this.use.draw( scrolly );
+	}
 };
 
 CleanInventoryItem.prototype.propogate_click = function(x, y){
@@ -228,12 +231,25 @@ CleanInventoryItem.prototype.propogate_click = function(x, y){
 			return true;
 		}
 	};
-	var items = [ this.equip, this.give, this.drop, this.use ];
-	var val = false;
-	for( var i in items ){
-		val = _click.call( this, items[i] ) || val;
+
+	if( this.state.inter.is_modal_visible() ){
+		return false;
 	}
-	return val;
+	var ch = this.state.player.get_pcs()[ this.state.uistore.pcselected ];
+	if( ch === undefined ){
+		return;
+	}
+	var itemname = ch.inventory[ this.index ];
+	if( itemname && itemname === this.state.uistore.currentitemname ){
+		var items = [ this.equip, this.give, this.drop, this.use ];
+		var val = false;
+		for( var i in items ){
+			val = _click.call( this, items[i] ) || val;
+		}
+		return val;
+	} else {
+		return false;
+	}
 };
 
 CleanInventoryItem.prototype.onclick = function(){
@@ -249,8 +265,11 @@ CleanInventoryItem.prototype.onclick = function(){
 	if( itemname === undefined ){
 		//i assume do the scroll thing
 	} else {
-		this.state.inter.set_currentitem( itemname );
-		this.state.inter.show_modal( this.state.uistore.modals.iteminfo );
+		if( itemname === this.state.uistore.currentitemname ){
+			this.state.inter.show_modal( this.state.uistore.modals.iteminfo );
+		} else {
+			this.state.inter.set_currentitem( itemname );
+		}
 	}
 };
 

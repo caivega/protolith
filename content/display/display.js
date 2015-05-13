@@ -20,7 +20,7 @@ var jsonjoin = function( obj, val ){
     return ret.slice( 0, ret.length - val.length );
 };
 
-var Display = app.display.Display = function(canvas_name){
+var Display = app.display.Display = function(canvas_name, prefix){
 
     this.bxSize = 252;
     this.bySize = 288;
@@ -32,9 +32,10 @@ var Display = app.display.Display = function(canvas_name){
     this.dimy = 288;
 
     this.thread = new app.display.Thread( this );
+    this.prefix = prefix || "";
 
     this.fps = 30;
-    this.currentresolution = "high";
+    this.currentresolution = "max";
     this.resolutions = {
         low: {w:472,h:288},
         med: {w:708,h:432},
@@ -42,7 +43,9 @@ var Display = app.display.Display = function(canvas_name){
         max: {w:window.innerWidth, h:window.innerHeight}
     };
 
-    this.id = canvas_name;
+    if( canvas_name ){
+        this.id = canvas_name;
+    }
     this.canvas = document.createElement("canvas");
     this.canvas.width = this.dimx;
     this.canvas.height = this.dimy; 
@@ -50,11 +53,13 @@ var Display = app.display.Display = function(canvas_name){
     this.canvas.id = this.id;
     this.context = this.canvas.getContext("2d");
     this.canvas.onselectstart = function () { return false; };
-    var wrap = document.getElementById("canvas_wrapper");
-    if( wrap ){
-        wrap.appendChild(this.canvas);
-    } else {
-        document.body.appendChild( this.canvas );
+    if( canvas_name ){
+        var wrap = document.getElementById("canvas_wrapper");
+        if( wrap ){
+            wrap.appendChild(this.canvas);
+        } else {
+            document.body.appendChild( this.canvas );
+        }
     }
 
     this.OnResizeCalled = function(){
@@ -66,6 +71,10 @@ var Display = app.display.Display = function(canvas_name){
         this.dimy = this.resolutions[ this.currentresolution ].h;
         this.canvas.style.width = "100%";
         this.canvas.style.height = "100%";
+
+        for( var i in this.animations ){
+            this.animations[i].recalculate_scale();
+        }
 
         for( var i in this.textimages ){
             delete this.sprites[ this.textimages[i] ];
@@ -79,7 +88,6 @@ var Display = app.display.Display = function(canvas_name){
         } 
     }.bind(this);
 
-    this.OnResizeCalled();
     window.addEventListener("resize", this.OnResizeCalled, false);
 
     this.canvas.style.position = "absolute";
@@ -89,6 +97,7 @@ var Display = app.display.Display = function(canvas_name){
     this.images = {};
     this.textimages = [];
 
+    this.actorsprites = [];
     this.sprites = {};
     this.num_sprites = 0;
     this.loaded_sprites = 0;
@@ -109,6 +118,7 @@ var Display = app.display.Display = function(canvas_name){
     ];
 
     this.init();
+    this.OnResizeCalled();
 };
 
 Display.prototype.set_resolution = function(res){
@@ -293,7 +303,7 @@ Display.prototype.load_picture = function(name, url, w, h){
         this.sprites[name] = s;
         this.images[name] = imageObj;
     }.bind(this);   
-    imageObj.src = url; 
+    imageObj.src = this.prefix + url; 
 };
 
 Display.prototype.load_dataurl = function( name, canv, w, h ){
@@ -318,7 +328,7 @@ Display.prototype.load_spritesheet = function(name, url){
         this.loaded_spritesheets++;
         this.images[name] = imageObj;
     }.bind(this);   
-    imageObj.src = url; 
+    imageObj.src = this.prefix + url; 
 };
 
 Display.prototype.load_sprite_from_spritesheet = function(name, ss_name, x, y, w, h){
@@ -330,6 +340,7 @@ Display.prototype.load_actor_sprites = function(name, ss_name, x, y, w, h){
     var app = "";
     var yoff = 0;
     this.load_sprite_from_spritesheet(name, ss_name, x, y, w, h);
+    this.actorsprites.push( name );
     for( var i = 0; i < 4; i++){
         switch(i){
             case 0: app = "dr"; break;
@@ -417,19 +428,23 @@ Display.prototype.draw_sprite = function( name, x, y ){
 };
 
 Display.prototype.draw_sprite_scaled = function( name, x, y, w, h ){
-    var spr;
-    var img;
+    var spr = null;
+    var img = null;
 
     spr = this.sprites[name];
     if( spr ){
         img = this.images[spr.name];
     } else {
-        console.log("ERROR sprite "+name);
+        console.error("ERROR sprite '"+name+"' does not exist.");
         return;
     }
          
     this.context.drawImage(img, spr.x,spr.y,spr.w,spr.h,(x), (y), w, h); 
 };
+
+Display.prototype.has_sprite = function(name){
+    return !!(this.sprites[ name ] && this.images[ this.sprites[name].name ]);
+}
 
 Display.prototype.draw_sprite_scaled_centered = function(name, x, y, w, h){
     this.draw_sprite_scaled( name, (x)-w/2,(y)-h/2, w, h );  
@@ -612,6 +627,14 @@ Display.prototype.draw_text_params = function( text, x, y, params ){
         this.draw_text_to_context( id, text, params );
         this.draw_text_params( text, x, y, params );
     }
+};
+
+Display.prototype.get_anim_definition = function(name){
+    var anim = this.animations[ name ];
+    if( !anim ){
+        throw new Error("ERROR: no animation definition with name '"+name+"' exists");
+    }
+    return anim;
 };
 
 Display.prototype.init = function(){
@@ -896,23 +919,7 @@ Display.prototype.init = function(){
     this.load_sprite_from_spritesheet("se_blessed_w","status", 16, 0, 10, 10);
     this.load_sprite_from_spritesheet("se_blessed_s","status", 17, 0, 10, 10);
 
-    this.load_spritesheet("damages","display/images/damaged.png");
-    this.load_sprite_from_spritesheet("physd","damages", 0, 0, 28, 32);
-    this.load_sprite_from_spritesheet("ranged","damages", 1, 0, 28, 32);
-    this.load_sprite_from_spritesheet("poisond","damages", 2, 0, 28, 32);
-    this.load_sprite_from_spritesheet("chaind","damages", 3, 0, 28, 32);
-    this.load_sprite_from_spritesheet("fired","damages", 4, 0, 28, 32);
-    this.load_sprite_from_spritesheet("death0","damages", 5, 0, 28, 32);
-    this.load_sprite_from_spritesheet("death1","damages", 6, 0, 28, 32);
-    this.load_sprite_from_spritesheet("death2","damages", 7, 0, 28, 32);
-    this.load_sprite_from_spritesheet("death3","damages", 8, 0, 28, 32);
-    this.load_sprite_from_spritesheet("blessd","damages", 9, 0, 28, 32);
-    this.load_sprite_from_spritesheet("iced","damages", 10, 0, 28, 32);
-
     this.load_spritesheet("spells1", "display/images/spellanimations.png");
-    this.load_animoverlay_sprites("fir","spells1", 0, 0, 28, 32);
-    this.load_animoverlay_sprites("icy","spells1", 0, 1, 28, 32);
-    this.load_animoverlay_sprites("mag","spells1", 0, 2, 28, 32);
 
     this.load_spritesheet("pj1", "display/images/projectiles.png");
     this.load_overlay_sprites("icyproj","pj1", 0, 0, 28, 32);
@@ -935,6 +942,11 @@ Display.prototype.init = function(){
     this.load_picture("cleansquarecontrol","display/images/cleanui/squarecontrol.png", 26, 26);
 
     this.draw_rect = this.draw;
+    this.animations = {};
+    for( var i in app.display.definitions ){
+        this.animations[ i ] = new app.display.definitions[ i ]( this );
+        this.animations[ i ].load();
+    }
 };
 
 })();

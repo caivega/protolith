@@ -6,7 +6,14 @@
 
 var Thread = app.display.Thread = function(display){
 	this.display = display;
-    this.timer = new app.game.Timer();
+    if( app.game ){
+        this.timer = new app.game.Timer();
+    } else {
+        this.timer = {
+            time: function(){},
+            timeEnd: function(){}
+        };
+    }
     this.fpsframe = 0;
     this.displayedfps = 0;
     this.intervalid = -1;
@@ -18,7 +25,6 @@ Thread.prototype.begin_interval = function(func){
 		this.stop_interval();
 	}
 	this.func = func;
-	console.log("BEGIN INTERVAL", this.intervalid, this.display.fps);
     if( this.display.fps === 60 ){
     	var intervalid = this.intervalid = app.random_id(5);
         var renderfunc = function render60Fps(){

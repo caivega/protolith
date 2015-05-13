@@ -92,6 +92,11 @@ Interface.prototype.disable_select = function(){
 	this.uistore.select.visible = false;
 };
 
+Interface.prototype.add_animation = function(anim){
+    this.uistore.animations.push( anim );
+};
+
+//These are re-bound in world state to have it's 'this' context
 Interface.prototype.actionfuncs = {
 	talk: function(){
 		if( this.uistore.select.visible === false ){

@@ -213,7 +213,9 @@ CleanPickupItem.prototype.draw = function(scrolly){
 };
 
 CleanPickupItem.prototype.propogate_click = function(x, y){
-	if(this.contains( this.weight.x, this.weight.y, this.weight.w, this.weight.h, x, y )){
+	if(this.contains(
+		this.weight.x, this.weight.y+this.scrolly, this.weight.w, this.weight.h, x, y 
+	)){
 		this.weight.onclick();
 		return true;
 	}
@@ -231,8 +233,11 @@ CleanPickupItem.prototype.onclick = function(){
 	if( itemname === undefined ){
 		//i assume do the scroll thing
 	} else {
-		this.state.inter.set_currentitem( itemname );
-		this.state.inter.show_modal( this.state.uistore.modals.iteminfo );
+		if( itemname === this.state.uistore.currentitemname ){
+			this.state.inter.show_modal( this.state.uistore.modals.iteminfo );
+		} else {
+			this.state.inter.set_currentitem( itemname );
+		}
 	}
 };
 
@@ -311,18 +316,20 @@ function CleanPickupWeight( game, state, display, index ){
 	CleanUIElem.call( this, game, state, display );
 	this.index = index;
 
-	var yoffset = 21;
+	var yoffset = 38;
 	var stride = this.to_y_ratio( 20 );
 
 	this.x = this.to_x_ratio( 370 );
 	this.y = this.to_y_ratio( yoffset ) + index*( stride + 1 );
 	this.w = this.to_x_ratio( 90 );
 	this.h = this.to_y_ratio( 18 );
-	this.defaulttextsize = 12;
+	this.defaulttextsize = 10;
 	this.font = this.FONT;
 	this.color = this.DARKCOLOR;
+	this.scrolly = 0;
 
 	this.textx = this.to_x_ratio( 422 ) + (this.w + 1)*index;
+	this.textyw = this.to_y_ratio( yoffset - 9 ) + index*( stride + 1 );
 	this.texty = this.to_y_ratio( yoffset + 9 ) + index*( stride + 1 );
 	this.textcolor = this.LIGHTTEXTCOLOR;
 	this.font = this.FONT;
@@ -338,16 +345,23 @@ CleanPickupWeight.prototype.draw = function( scrolly ){
 		return;
 	}
 	var item = itemobj.item;
-	var text = item.weight + " lbs";
-
+	var weighttext = item.weight + " lbs";
 	this.display.draw_rect( this.x, this.y + scrolly, this.w, this.h, this.color );
 
-	this.display.draw_text_params( text, this.textx, this.texty + scrolly, {
+	this.display.draw_text_params( weighttext, this.textx, this.textyw + scrolly, {
 		color: this.textcolor,
 		font: this.font,
 		size: this.get_font_size( this.defaulttextsize ),
 		align: "center"
 	});
+	this.display.draw_text_params( "Acquire", this.textx, this.texty + scrolly, {
+		color: this.textcolor,
+		font: this.font,
+		size: this.get_font_size( this.defaulttextsize ),
+		align: "center"
+	});
+
+	this.scrolly = scrolly;
 };
 
 CleanPickupWeight.prototype.onclick = function(){
@@ -363,6 +377,65 @@ CleanPickupWeight.prototype.onclick = function(){
 
 	this.state.player.acquire_item( ch, itemname, itemobj.sq );
 	this.state.inter.update_nearby_items( this.state.wMode.cactor );
+	this.state.inter.add_animation( 
+		new CleanPickupAnimation( this.game, this.state, this.display, {
+			target: ch,
+			sprite: itemobj.item.sprite,
+			startx: this.to_x_ratio( 120 ),
+			starty: this.to_y_ratio( 30 ) + 
+				this.index*( this.to_y_ratio( 20 ) + 1 ) + this.scrolly,
+		})
+	);
+};
+
+function CleanPickupAnimation( game, state, display, params ){
+	CleanUIElem.call( this, game, state, display );
+
+	this.sprite = params.sprite;
+	this.startx = params.startx;
+	this.starty = params.starty;
+	this.target = params.target;
+	this.numframes = this.display.get_normalized_frames( 20 );
+	this.frame = 0;
+
+	var pcindex = 0;
+	var pcs = this.state.player.get_pcs();
+	for( var i in pcs ){
+		if( pcs[i] === this.target ){
+			pcindex = i;
+			break;
+		}
+	}
+	var actualh = this.y_percent_to_pixel( 0.09375 );
+	var w = this.x_percent_to_pixel( 0.2265762711864407 );
+	var h = this.y_percent_to_pixel( 0.09027777777777778 );
+	this.endy = (this.y_percent_to_pixel(0.06944444444444445) + pcindex * actualh) + h/2;
+	this.endx = this.x_percent_to_pixel( 0.00211864406779661 ) + w/2;
+
+	this.removeme = false;
+
+	this.w = this.to_x_ratio( 14 );
+	this.h = this.to_x_ratio( 14 );
+	this.x = this.startx;
+	this.y = this.starty;
+}
+CleanPickupAnimation.prototype = extend(CleanUIElem);
+
+CleanPickupAnimation.prototype.draw = function(){
+	if( this.frame >= this.numframes ){
+		this.x = this.endx;
+		this.y = this.endy;
+		this.removeme = true;
+	} else {
+		this.x = app.normalize( this.frame, 0, this.numframes, this.startx, this.endx );
+		this.y = app.normalize( this.frame, 0, this.numframes, this.starty, this.endy );
+	}
+
+	this.display.draw_sprite_scaled_centered(
+		this.sprite, this.x, this.y, this.w, this.h
+	);
+
+	this.frame++;
 };
 
 })();

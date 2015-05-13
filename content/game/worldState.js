@@ -49,6 +49,7 @@ var WorldState = app.game.WorldState = function( game, stateparams ){
         currentitemname: "none", //what the current item name for modals is
         currentspell: null,
         currentnpc: null,
+        animations: [],
         select:{
         	visible: false,
         	onselect: function(){},
@@ -150,6 +151,7 @@ WorldState.prototype.remake_ui = function(){
         app.ui.overlays.CleanDarkMagicOverlay,
         app.ui.overlays.CleanLightMagicOverlay,
         app.ui.overlays.CleanPickupOverlay,
+        app.ui.overlays.CleanMapOverlay,
         app.ui.overlays.CleanOptionsOverlay,
         app.ui.overlays.CleanDialogueOverlay,
         app.ui.CleanNotification,
@@ -258,6 +260,13 @@ WorldState.prototype.draw = function(){
     }
     for( var i in this.cleanuielems ){
         this.cleanuielems[i].draw();
+    }
+    for( var i = 0; i < this.uistore.animations.length; i++ ){
+        this.uistore.animations[i].draw();
+        if( this.uistore.animations[i].removeme ){
+            this.uistore.animations.splice(i,1);
+            i--;
+        }
     }
 };
 

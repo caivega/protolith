@@ -69,6 +69,13 @@ app.world.actor.Character = function(x, y, sprite, name, display, world, ai, sta
     this.isNPC = true;
 	this.direction = "r"; //right or left
 	this.mode = (this.is_animated)?"":"d"; //attack or default
+
+	if( this.is_animated ){
+		this.animation = new app.display.Animation( 
+			this.display.get_anim_definition( "TestAnimation2" )
+		);
+	}
+
 	this.isAlive = true;
 	this.behavior  = "aggro_melee";
 	this.allegiance = "ally";
@@ -142,13 +149,20 @@ Character.prototype.draw = function(){
 	}
 
 	if( this.isVisible && this.is_on_screen() ){
-	    this.display.draw_sprite_scaled(
-	    	nspr, 
-            this.world.grid_to_pixw(this.x)+this.walk_offsetx, 
-            this.world.grid_to_pixh(this.y)+this.walk_offsety,
-            this.world.gridw,
-            this.world.gridh
-		);   
+		// if( this.is_animated ){
+		// 	this.animation.draw( 
+		// 		this.world.grid_to_pixw(this.x)+this.walk_offsetx,
+		// 		this.world.grid_to_pixh(this.y)+this.walk_offsety
+		// 	);
+		// } else {
+		    this.display.draw_sprite_scaled(
+		    	nspr, 
+	            this.world.grid_to_pixw(this.x)+this.walk_offsetx, 
+	            this.world.grid_to_pixh(this.y)+this.walk_offsety,
+	            this.world.gridw,
+	            this.world.gridh
+			);
+		//}
 	    //Comment this out to hide the HP display
 	    this.display.draw_text_params(
 	    	this.stats.curr_hp, 

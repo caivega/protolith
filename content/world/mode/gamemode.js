@@ -177,7 +177,9 @@ GameMode.prototype.end_actor_turn = function(){
                 this.begin_actor_turn(true);
             } else {
                 //gotta make sure the user can't double press keys accidentally
-                setTimeout( function(){this.begin_actor_turn(true);}, this.walkdelay );
+                setTimeout( 
+                    function(){this.begin_actor_turn(true);}.bind(this), this.walkdelay 
+                );
             }
         } else {
             this.begin_actor_turn();
